@@ -4,17 +4,17 @@ export const stats = [
   {
     value: '7',
     label: 'Kandas (Books) shaping the epic narrative',
-    color: 'bg-[#FF6B6B]',
+    color: 'bg-[#FF9933]',
   },
   {
     value: '24,000+',
     label: 'Couplets (Shlokas) composing the Adi Kavya',
-    color: 'bg-[#4ECDC4]',
+    color: 'bg-[#005B96]',
   },
   {
     value: '14 Years',
     label: 'of exile demonstrating honor and sacrifice',
-    color: 'bg-[#FFE66D]',
+    color: 'bg-[#FFD700]',
   },
 ];
 
@@ -191,6 +191,46 @@ export const stories: Story[] = [
     title: "Jatayu's Sacrifice",
     description: "A story about the brave vulture Jatayu who fights Ravana to save Sita but is mortally wounded.",
     link: "https://g.co/gemini/share/0a71f027ee83"
+  },
+  {
+    title: "The Search for Sita",
+    description: "A story about Rama and Lakshmana's desperate search for Sita, and their encounter with the monkey king Sugriva and his loyal minister Hanuman.",
+    link: "https://g.co/gemini/share/9cbd9d3ee0e9"
+  },
+  {
+    title: "Hanuman's Leap to Lanka",
+    description: "A story about Hanuman's incredible leap across the ocean to the island of Lanka in search of Sita.",
+    link: "https://g.co/gemini/share/896b58c855fa"
+  },
+  {
+    title: "Hanuman in Lanka",
+    description: "A story about Hanuman finding Sita in Ravana's Ashok Vatika, delivering Rama's message, and setting Lanka on fire.",
+    link: "https://g.co/gemini/share/f243c5c4c26c"
+  },
+  {
+    title: "The Bridge to Lanka",
+    description: "A story about how the monkey army, under the guidance of Nala and Nila, builds a bridge across the ocean to Lanka.",
+    link: "https://g.co/gemini/share/7d811eb43e6e"
+  },
+  {
+    title: "The Great War",
+    description: "A story about the epic battle between Rama's army and Ravana's forces, including the defeat of powerful demons like Kumbhakarna and Indrajit.",
+    link: "https://g.co/gemini/share/c218d3ed5eba"
+  },
+  {
+    title: "The Slaying of Ravana",
+    description: "A story about the final duel between Rama and Ravana, where Rama kills the ten-headed demon king with the divine Brahmastra.",
+    link: "https://g.co/gemini/share/b52f9c5cd7a6"
+  },
+  {
+    title: "The Agni Pariksha of Sita",
+    description: "A story about Sita's trial by fire to prove her purity after her captivity.",
+    link: "https://g.co/gemini/share/8c9cfb2a6860"
+  },
+  {
+    title: "The Return to Ayodhya and Coronation",
+    description: "A story about Rama, Sita, and Lakshmana's triumphant return to Ayodhya after 14 years, and Rama's coronation as the king.",
+    link: "https://g.co/gemini/share/d58474a2a72d"
   }
 ];
 
@@ -223,42 +263,42 @@ export const mapLocations: MapLocation[] = [
     id: 'ayodhya',
     name: 'Ayodhya',
     description: 'The capital of the Kosala kingdom and the birthplace of Rama. The story begins and ends here.',
-    coords: { x: '50%', y: '25%' },
+    coords: { x: '55%', y: '25%' },
   },
   {
     id: 'mithila',
     name: 'Mithila',
     description: 'The kingdom of King Janaka, the father of Sita. This is where Rama won Sita\'s hand in marriage.',
-    coords: { x: '65%', y: '28%' },
+    coords: { x: '68%', y: '27%' },
   },
   {
     id: 'dandaka',
     name: 'Dandaka Forest',
     description: 'A vast and dense forest where Rama, Sita, and Lakshmana spent most of their 14-year exile.',
-    coords: { x: '50%', y: '55%' },
+    coords: { x: '50%', y: '50%' },
   },
   {
     id: 'panchavati',
     name: 'Panchavati',
     description: 'A beautiful spot within the Dandaka Forest, near the Godavari river, from where Sita was abducted by Ravana.',
-    coords: { x: '40%', y: '65%' },
+    coords: { x: '42%', y: '58%' },
   },
   {
     id: 'kishkindha',
     name: 'Kishkindha',
     description: 'The kingdom of the Vanaras (monkeys), where Rama allied with Sugriva and Hanuman to search for Sita.',
-    coords: { x: '50%', y: '78%' },
+    coords: { x: '48%', y: '75%' },
   },
   {
     id: 'rameshwaram',
     name: 'Rameshwaram',
     description: 'The southern tip of India from where the Vanara army built the Ram Setu bridge to Lanka.',
-    coords: { x: '60%', y: '88%' },
+    coords: { x: '53%', y: '88%' },
   },
   {
     id: 'lanka',
     name: 'Lanka',
     description: 'The island kingdom of the demon king Ravana, where Sita was held captive. The site of the epic final battle.',
-    coords: { x: '62%', y: '94%' },
+    coords: { x: '58%', y: '95%' },
   },
 ];

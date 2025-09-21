@@ -16,7 +16,7 @@ const Navigation: React.FC = () => {
         <a
           key={link.href}
           href={link.href}
-          className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base uppercase tracking-wider text-[#1E1E1E] transition-colors duration-300 ${link.color} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#FDF6E9] focus:ring-[#1E1E1E]`}
+          className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base uppercase tracking-wider text-[#1E1E1E] dark:text-[#FBF5E8] transition-colors duration-300 ${link.color} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#FDF6E9] dark:focus:ring-offset-[#2a1a19] focus:ring-[#1E1E1E] dark:focus:ring-[#FBF5E8]`}
         >
           {link.label}
         </a>

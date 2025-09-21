@@ -19,12 +19,12 @@ const InteractiveMap: React.FC = () => {
     <div className="map-container" onClick={() => handleClose()}>
       <svg
         className="map-svg"
-        viewBox="0 0 200 300"
+        viewBox="0 0 350 500"
         xmlns="http://www.w3.org/2000/svg"
         aria-label="Map of Ancient India"
       >
-        <path className="map-land" d="M100 5 L170 80 L160 180 L130 250 L70 250 L40 180 L30 80 Z" />
-        <path className="map-sri-lanka" d="M115 270 C 125 265, 135 275, 125 285 C 115 295, 105 285, 115 270 Z" />
+        <path className="map-india" d="M175 10 C 120 20, 80 80, 85 150 L 70 200 C 60 250, 90 350, 150 420 L 175 450 L 200 420 C 260 350, 290 250, 280 200 L 265 150 C 270 80, 230 20, 175 10 Z" />
+        <path className="map-sri-lanka" d="M195,460 C185,465 180,480 190,495 L195,498 L200,495 C210,480 205,465 195,460 Z" />
       </svg>
       {mapLocations.map((location) => (
         <div
