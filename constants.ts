@@ -1,4 +1,4 @@
-import { Kanda, Story } from './types';
+import { Kanda, Story, FamilyTreeNode, MapLocation } from './types';
 
 export const stats = [
   {
@@ -166,5 +166,99 @@ export const stories: Story[] = [
     title: 'The Plot of Kaikeyi',
     description: 'A story about how Queen Kaikeyi, influenced by her maid Manthara, asks King Dasharatha to fulfill two boons: to make her son Bharata the king and to send Rama into exile for 14 years.',
     link: 'https://g.co/gemini/share/a3059de809aa'
+  },
+  {
+    title: "Rama's Exile",
+    description: "A story about Rama, Sita, and Lakshmana leaving Ayodhya and beginning their life in the forest.",
+    link: "https://g.co/gemini/share/e8963612ada6"
+  },
+  {
+    title: "The Grief of Dasharatha",
+    description: "A story about King Dasharatha's sorrow and death after Rama's departure.",
+    link: "https://g.co/gemini/share/6c9e0f158616"
+  },
+  {
+    title: "Bharata's Devotion",
+    description: "A story about Bharata's refusal to accept the throne and his journey to persuade Rama to return. When Rama refuses, Bharata places Rama's sandals on the throne and rules as a regent.",
+    link: "https://g.co/gemini/share/9051fa71bbdb"
+  },
+  {
+    title: "The Abduction of Sita",
+    description: "A story about how the demon king Ravana, disguised as a sage, abducts Sita while Rama and Lakshmana are away.",
+    link: "https://g.co/gemini/share/234ae1bfffa7"
+  },
+  {
+    title: "Jatayu's Sacrifice",
+    description: "A story about the brave vulture Jatayu who fights Ravana to save Sita but is mortally wounded.",
+    link: "https://g.co/gemini/share/0a71f027ee83"
+  }
+];
+
+export const familyTreeData: FamilyTreeNode = {
+  name: 'Dasharatha',
+  spouse: 'Kausalya, Kaikeyi, Sumitra',
+  children: [
+    {
+      name: 'Rama',
+      spouse: 'Sita',
+      children: [
+        { name: 'Lava' },
+        { name: 'Kusha' },
+      ],
+    },
+    {
+      name: 'Bharata',
+    },
+    {
+      name: 'Lakshmana',
+    },
+    {
+      name: 'Shatrughna',
+    },
+  ],
+};
+
+export const mapLocations: MapLocation[] = [
+  {
+    id: 'ayodhya',
+    name: 'Ayodhya',
+    description: 'The capital of the Kosala kingdom and the birthplace of Rama. The story begins and ends here.',
+    coords: { x: '50%', y: '25%' },
+  },
+  {
+    id: 'mithila',
+    name: 'Mithila',
+    description: 'The kingdom of King Janaka, the father of Sita. This is where Rama won Sita\'s hand in marriage.',
+    coords: { x: '65%', y: '28%' },
+  },
+  {
+    id: 'dandaka',
+    name: 'Dandaka Forest',
+    description: 'A vast and dense forest where Rama, Sita, and Lakshmana spent most of their 14-year exile.',
+    coords: { x: '50%', y: '55%' },
+  },
+  {
+    id: 'panchavati',
+    name: 'Panchavati',
+    description: 'A beautiful spot within the Dandaka Forest, near the Godavari river, from where Sita was abducted by Ravana.',
+    coords: { x: '40%', y: '65%' },
+  },
+  {
+    id: 'kishkindha',
+    name: 'Kishkindha',
+    description: 'The kingdom of the Vanaras (monkeys), where Rama allied with Sugriva and Hanuman to search for Sita.',
+    coords: { x: '50%', y: '78%' },
+  },
+  {
+    id: 'rameshwaram',
+    name: 'Rameshwaram',
+    description: 'The southern tip of India from where the Vanara army built the Ram Setu bridge to Lanka.',
+    coords: { x: '60%', y: '88%' },
+  },
+  {
+    id: 'lanka',
+    name: 'Lanka',
+    description: 'The island kingdom of the demon king Ravana, where Sita was held captive. The site of the epic final battle.',
+    coords: { x: '62%', y: '94%' },
   },
 ];

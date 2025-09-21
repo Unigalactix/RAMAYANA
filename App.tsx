@@ -4,6 +4,9 @@ import StatCard from './components/StatCard';
 import BenefitCard from './components/BenefitCard';
 import KandaDetailModal from './components/KandaDetailModal';
 import StoryCard from './components/StoryCard';
+import FamilyTree from './components/FamilyTree';
+import InteractiveMap from './components/InteractiveMap';
+import Navigation from './components/Navigation';
 import { stats, kandas, characters, themes, stories } from './constants';
 import { Kanda } from './types';
 import { BookIcon, CrownIcon, ForestIcon, MonkeyIcon, LeapIcon, WarIcon, ScrollIcon, BowIcon, LotusIcon, MaceIcon, TenHeadsIcon, DharmaWheelIcon, BalanceIcon, TempleIcon, DivineIcon, StorybookOpenIcon } from './components/Icons';
@@ -116,6 +119,8 @@ const App: React.FC = () => {
         className="absolute top-1/2 left-1/3 w-24 h-24 md:w-48 md:h-48 bg-[#FFE66D] rounded-xl opacity-50 -translate-x-1/2 -translate-y-1/2 rotate-45"
         style={{ transform: `translateX(-50%) translateY(-50%) rotate(45deg) translateY(${scrollY * 0.15}px)` }}
       ></div>
+      
+      <Navigation />
 
       <main className="container mx-auto px-6 py-12 md:py-20 relative z-10">
         <Header />
@@ -211,6 +216,31 @@ const App: React.FC = () => {
               </AnimateOnScroll>
             ))}
           </div>
+        </section>
+
+        <section id="map" className="my-16 md:my-24">
+          <AnimateOnScroll>
+            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#1E1E1E] mb-12">
+              Journey Across <span className="text-[#4ECDC4]">Ancient India</span>
+            </h2>
+            <p className="text-center text-lg max-w-3xl mx-auto mb-12 text-gray-700">
+              Click on the markers to explore the key locations that set the stage for this epic tale.
+            </p>
+          </AnimateOnScroll>
+          <AnimateOnScroll delay={200}>
+            <InteractiveMap />
+          </AnimateOnScroll>
+        </section>
+
+        <section id="family-tree" className="my-16 md:my-24">
+          <AnimateOnScroll>
+            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#1E1E1E] mb-12">
+              The Lineage of <span className="text-[#FF6B6B]">Ikshvaku</span>
+            </h2>
+          </AnimateOnScroll>
+          <AnimateOnScroll delay={200}>
+            <FamilyTree />
+          </AnimateOnScroll>
         </section>
 
 

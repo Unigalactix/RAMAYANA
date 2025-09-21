@@ -41,3 +41,16 @@ export interface StoryCardProps {
   link: string;
   color: string;
 }
+
+export interface FamilyTreeNode {
+  name: string;
+  spouse?: string;
+  children?: FamilyTreeNode[];
+}
+
+export interface MapLocation {
+  id: string;
+  name: string;
+  description: string;
+  coords: { x: string; y: string };
+}
