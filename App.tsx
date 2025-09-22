@@ -5,7 +5,8 @@ import BenefitCard from './components/BenefitCard';
 import KandaDetailModal from './components/KandaDetailModal';
 import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
-import InteractiveMap from './components/InteractiveMap';
+// import InteractiveMap from './components/InteractiveMap';
+import AskValmikiChatBox from './components/AskValmikiChatBox';
 import Navigation from './components/Navigation';
 import AudioManager from './utils/AudioManager';
 import { stats, kandas, characters, themes, stories } from './constants';
@@ -300,17 +301,20 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="map" className="my-16 md:my-24">
+        <section id="ask-valmiki" className="my-16 md:my-24">
           <AnimateOnScroll>
             <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
-              Journey Across <span className="text-[#005B96] dark:text-[#63B3ED]">Ancient India</span>
+              Ask <span className="text-[#005B96] dark:text-[#63B3ED]">Valmiki</span>
             </h2>
             <p className="text-center text-lg max-w-3xl mx-auto mb-12 text-gray-700 dark:text-gray-300">
-              Click on the markers to explore the key locations that set the stage for this epic tale.
+              Have a question about the Ramayana? Ask Valmiki! Answers are sourced from <a href="https://www.valmikiramayan.net/index.html" target="_blank" rel="noopener noreferrer" className="underline text-[#005B96]">valmikiramayan.net</a>.
             </p>
           </AnimateOnScroll>
           <AnimateOnScroll delay={200}>
-            <InteractiveMap />
+            {/* Chat box UI will be rendered here */}
+            <div className="ask-valmiki-chatbox mx-auto max-w-2xl p-6 bg-[#f6ecd8] dark:bg-[#2a1a19] rounded-xl shadow-lg border border-[#FFD700]">
+              <AskValmikiChatBox />
+            </div>
           </AnimateOnScroll>
         </section>
 
