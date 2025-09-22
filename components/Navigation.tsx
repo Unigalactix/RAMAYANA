@@ -1,4 +1,5 @@
 import React from 'react';
+import AudioManager from '../utils/AudioManager';
 
 const navLinks = [
   { href: '#kandas', label: 'Kandas', color: 'hover:text-[#FF6B6B]' },
@@ -10,6 +11,16 @@ const navLinks = [
 ];
 
 const Navigation: React.FC = () => {
+  const audioManager = AudioManager.getInstance();
+
+  const handleNavClick = () => {
+    audioManager.playSoundEffect('bell');
+  };
+
+  const handleNavHover = () => {
+    audioManager.playSoundEffect('sitar');
+  };
+
   return (
     <nav className="main-nav font-anton">
       {navLinks.map((link) => (
@@ -17,6 +28,8 @@ const Navigation: React.FC = () => {
           key={link.href}
           href={link.href}
           className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base uppercase tracking-wider text-[#1E1E1E] dark:text-[#FBF5E8] transition-colors duration-300 ${link.color} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#FDF6E9] dark:focus:ring-offset-[#2a1a19] focus:ring-[#1E1E1E] dark:focus:ring-[#FBF5E8]`}
+          onClick={handleNavClick}
+          onMouseEnter={handleNavHover}
         >
           {link.label}
         </a>

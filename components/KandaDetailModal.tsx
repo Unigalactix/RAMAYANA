@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { KandaDetailModalProps } from '../types';
+import AudioManager from '../utils/AudioManager';
 
 const KandaDetailModal: React.FC<KandaDetailModalProps> = ({ kanda, onClose }) => {
+  const audioManager = AudioManager.getInstance();
+
+  useEffect(() => {
+    // Play opening sound when modal opens
+    audioManager.playSoundEffect('gong');
+  }, []);
+
+  const handleClose = () => {
+    audioManager.playSoundEffect('bell');
+    onClose();
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">&times;</button>
+        <button className="modal-close-btn" onClick={handleClose} aria-label="Close modal">&times;</button>
         <h2 className="font-anton text-3xl md:text-4xl text-[#FF6B6B] uppercase tracking-wider mb-2">
           {kanda.title}
         </h2>

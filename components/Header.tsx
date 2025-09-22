@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { SunIcon, MoonIcon } from './Icons';
+import AudioControls from './AudioControls';
 
 interface HeaderProps {
   theme: string;
@@ -10,9 +11,10 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
   return (
     <header className="text-center py-12 md:py-20 relative">
+      {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-[#FBF5E8] dark:bg-[#4A2E2C] rounded-full flex items-center justify-center border-2 border-[#4A2E2C] dark:border-[#FBF5E8] shadow-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF9933] z-20"
+        className="absolute top-4 right-16 md:top-8 md:right-20 w-12 h-12 bg-[#FBF5E8] dark:bg-[#4A2E2C] rounded-full flex items-center justify-center border-2 border-[#4A2E2C] dark:border-[#FBF5E8] shadow-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF9933] z-20"
         aria-label="Toggle dark mode"
       >
         {theme === 'light' ? (
@@ -21,6 +23,11 @@ const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
           <SunIcon className="w-6 h-6 text-[#FBF5E8]" />
         )}
       </button>
+
+      {/* Audio Controls */}
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 z-20">
+        <AudioControls />
+      </div>
 
        <div className="absolute -top-10 -right-10 w-40 h-40 border-8 border-[#4A2E2C] dark:border-[#FBF5E8] rounded-full opacity-10 -z-10"></div>
        <div className="absolute top-20 -left-10 w-20 h-20 bg-[#FF9933] rounded-full -z-10 opacity-50"></div>

@@ -7,6 +7,7 @@ import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
 import InteractiveMap from './components/InteractiveMap';
 import Navigation from './components/Navigation';
+import AudioManager from './utils/AudioManager';
 import { stats, kandas, characters, themes, stories } from './constants';
 import { Kanda } from './types';
 import { BookIcon, CrownIcon, ForestIcon, MonkeyIcon, LeapIcon, WarIcon, ScrollIcon, BowIcon, LotusIcon, MaceIcon, TenHeadsIcon, DharmaWheelIcon, BalanceIcon, TempleIcon, DivineIcon, StorybookOpenIcon } from './components/Icons';
@@ -65,6 +66,21 @@ const App: React.FC = () => {
     return 'light';
   });
 
+  // Initialize audio manager
+  useEffect(() => {
+    const audioManager = AudioManager.getInstance();
+    audioManager.initialize();
+    audioManager.preloadBackgroundMusic();
+    audioManager.preloadSoundEffects();
+    
+    // Start background music after a short delay
+    const timer = setTimeout(() => {
+      audioManager.playBackgroundMusic('main');
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -118,6 +134,21 @@ const App: React.FC = () => {
   const handleOpenModal = (kanda: Kanda) => {
     setSelectedKanda(kanda);
     document.body.style.overflow = 'hidden';
+    
+    // Play kanda-specific music
+    const audioManager = AudioManager.getInstance();
+    const kandaToMusic: { [key: string]: string } = {
+      'Bala Kanda': 'balakanda',
+      'Ayodhya Kanda': 'ayodhyakanda', 
+      'Aranya Kanda': 'aranyakanda',
+      'Kishkindha Kanda': 'kishkindhakanda',
+      'Sundara Kanda': 'sundarakanda',
+      'Yuddha Kanda': 'lankakanda',
+      'Uttara Kanda': 'uttarakanda'
+    };
+    
+    const musicTrack = kandaToMusic[kanda.title] || 'main';
+    audioManager.playBackgroundMusic(musicTrack);
   }
 
   const handleCloseModal = () => {
@@ -126,6 +157,10 @@ const App: React.FC = () => {
     }
     setSelectedKanda(null);
     document.body.style.overflow = '';
+    
+    // Return to main background music
+    const audioManager = AudioManager.getInstance();
+    audioManager.playBackgroundMusic('main');
   }
 
   return (

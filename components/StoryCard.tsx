@@ -1,12 +1,25 @@
 import React from 'react';
 import type { StoryCardProps } from '../types';
 import { ExternalLinkIcon } from './Icons';
+import AudioManager from '../utils/AudioManager';
 
 const StoryCard: React.FC<StoryCardProps> = ({ icon, title, description, link, color }) => {
   const cardClasses = `${color} p-6 rounded-2xl flex flex-col items-start h-full shadow-lg custom-card`;
+  const audioManager = AudioManager.getInstance();
+
+  const handleCardHover = () => {
+    audioManager.playSoundEffect('chime');
+  };
+
+  const handleReadStoryClick = () => {
+    audioManager.playSoundEffect('page-turn');
+  };
 
   return (
-    <div className={cardClasses}>
+    <div 
+      className={cardClasses}
+      onMouseEnter={handleCardHover}
+    >
       <div className="w-16 h-16 bg-[#FDF6E9] dark:bg-[#3b2a29] rounded-xl flex items-center justify-center border-2 border-black dark:border-[#a39483] mb-4 text-black dark:text-white">
         {icon}
       </div>
@@ -21,6 +34,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ icon, title, description, link, c
         rel="noopener noreferrer"
         className="mt-4 bg-[#1E1E1E] text-white font-bold py-2 px-4 rounded-lg inline-flex items-center self-start hover:bg-black dark:bg-[#FBF5E8] dark:text-[#1E1E1E] dark:hover:bg-gray-200 transition-colors"
         aria-label={`Read story: ${title}`}
+        onClick={handleReadStoryClick}
       >
         Read Story
         <ExternalLinkIcon />
