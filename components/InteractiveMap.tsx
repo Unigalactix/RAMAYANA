@@ -58,6 +58,10 @@ const InteractiveMap: React.FC = () => {
           </>
         )}
       </div>
+      {/* Coming Soon overlay (visual-only) */}
+      <div className="map-coming-soon" aria-hidden="true">
+        <div className="map-coming-soon__inner">Coming Soon</div>
+      </div>
     </div>
   );
 };
