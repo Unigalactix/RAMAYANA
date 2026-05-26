@@ -4,7 +4,6 @@ import { FamilyTreeNode } from '../types';
 
 interface TreeNodeProps {
   node: FamilyTreeNode;
-  isRoot?: boolean;
 }
 
 const GENERATION_COLORS: Record<number, { border: string; bg: string; nameBg: string }> = {
@@ -35,34 +34,17 @@ const TreeNode: React.FC<TreeNodeProps & { depth: number }> = ({ node, depth }) 
       <NodeCard node={node} depth={depth} />
       {hasChildren && (
         <>
-          {/* vertical line down from parent */}
+          {/* vertical line down from parent to horizontal connector */}
           <div className="w-0.5 h-6 bg-[#4A2E2C] dark:bg-[#a39483]" />
-          {/* horizontal connector */}
-          <div className="relative flex items-start justify-center">
-            {/* top horizontal bar */}
+          {/* children row with a horizontal bar spanning its full width */}
+          <div className="relative">
             {node.children!.length > 1 && (
-              <div
-                className="absolute top-0 h-0.5 bg-[#4A2E2C] dark:bg-[#a39483]"
-                style={{
-                  left: `calc(50% / ${node.children!.length} * 1)`,
-                  right: `calc(50% / ${node.children!.length} * 1)`,
-                  width: `calc(100% - (100% / ${node.children!.length}))`,
-                  marginLeft: `calc(100% / ${node.children!.length} / 2)`,
-                  marginRight: `calc(100% / ${node.children!.length} / 2)`,
-                }}
-              />
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#4A2E2C] dark:bg-[#a39483]" aria-hidden="true" />
             )}
-            <div className="flex gap-6 md:gap-10 items-start pt-6 relative">
-              {/* horizontal bar rendered as absolute overlay */}
-              {node.children!.length > 1 && (
-                <div
-                  className="absolute top-0 left-0 right-0 h-0.5 bg-[#4A2E2C] dark:bg-[#a39483]"
-                  aria-hidden="true"
-                />
-              )}
+            <div className="flex gap-6 md:gap-10 items-start pt-6">
               {node.children!.map((child, i) => (
                 <div key={i} className="flex flex-col items-center">
-                  {/* vertical line from top bar down to child */}
+                  {/* vertical line from horizontal bar down to child */}
                   <div className="w-0.5 h-6 bg-[#4A2E2C] dark:bg-[#a39483]" />
                   <TreeNode node={child} depth={depth + 1} />
                 </div>

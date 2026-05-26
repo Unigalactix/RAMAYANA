@@ -76,11 +76,41 @@ const AskValmikiChatBox: React.FC = () => {
     }
   };
 
-  const renderText = (text: string) =>
-    text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(
-      /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer" class="underline text-[#005B96] dark:text-[#63B3ED]">$1</a>'
-    );
+  const renderText = (text: string): React.ReactNode[] => {
+    // Split on markdown links [label](url) and bold **text**
+    const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\(https?:\/\/[^)]+\))/g);
+    return parts.map((part, i) => {
+      const boldMatch = part.match(/^\*\*([^*]+)\*\*$/);
+      if (boldMatch) return <strong key={i}>{boldMatch[1]}</strong>;
+      const linkMatch = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/);
+      if (linkMatch) {
+        // Validate the URL is safe (only http/https) before rendering as href
+        let safeHref: string | undefined;
+        try {
+          const parsed = new URL(linkMatch[2]);
+          if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+            safeHref = parsed.toString();
+          }
+        } catch {
+          safeHref = undefined;
+        }
+        return safeHref ? (
+          <a
+            key={i}
+            href={safeHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-[#005B96] dark:text-[#63B3ED]"
+          >
+            {linkMatch[1]}
+          </a>
+        ) : (
+          <React.Fragment key={i}>{linkMatch[1]}</React.Fragment>
+        );
+      }
+      return <React.Fragment key={i}>{part}</React.Fragment>;
+    });
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -108,9 +138,9 @@ const AskValmikiChatBox: React.FC = () => {
                     ? 'bg-[#FF9933] text-[#4A2E2C] font-semibold'
                     : 'bg-white dark:bg-[#3b2a29] border border-[#e0d0b8] dark:border-[#5a4030] text-[#4A2E2C] dark:text-[#FBF5E8]'
                 }`}
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: renderText(msg.text) }}
-              />
+              >
+                {renderText(msg.text)}
+              </div>
             </div>
           ))}
           {loading && (
