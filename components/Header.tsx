@@ -31,6 +31,12 @@ const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
             <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
        </div>
+
+      {/* Sanskrit invocation */}
+      <p className="font-anton text-xl md:text-2xl text-[#FF9933] tracking-widest mb-4" lang="sa" aria-label="Om Sri Ramaya Namah">
+        ॐ श्री रामाय नमः
+      </p>
+
       <h1 className="text-5xl md:text-8xl lg:text-9xl font-anton uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] leading-none">
         The Valmiki
         <br />
@@ -39,6 +45,15 @@ const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
       <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-gray-800 dark:text-gray-300">
         The foundational epic (Adi Kavya) of Indian civilization, a profound and multi-layered story of dharma, devotion, and the complex interplay between the human and the divine.
       </p>
+
+      {/* Decorative divider */}
+      <div className="mt-8 flex items-center justify-center gap-4" aria-hidden="true">
+        <div className="h-px w-24 bg-[#FF9933] opacity-60"></div>
+        <span className="text-[#FF9933] text-2xl">✦</span>
+        <span className="text-[#FFD700] text-3xl">❀</span>
+        <span className="text-[#FF9933] text-2xl">✦</span>
+        <div className="h-px w-24 bg-[#FF9933] opacity-60"></div>
+      </div>
     </header>
   );
 };

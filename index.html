@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Ramayana Infographic</title>
+    <meta name="description" content="An interactive infographic exploring the Valmiki Ramayana — the seven Kandas, key characters, sacred themes, ancient map, and the Ikshvaku lineage." />
+    <title>The Valmiki Ramayana — Adi Kavya Infographic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tinos:700&family=Noto+Serif:400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <style>
       html {
         scroll-behavior: smooth;
@@ -286,6 +287,14 @@
         height: 18px;
         cursor: pointer;
       }
+      .map-marker:focus {
+        outline: 3px solid #FF9933;
+        outline-offset: 4px;
+        border-radius: 50%;
+      }
+      .map-marker:focus:not(:focus-visible) {
+        outline: none;
+      }
       /* Larger tappable area for mobile */
       .map-marker::before {
         content: '';
@@ -492,6 +501,7 @@
     </style>
 </head>
   <body class="bg-[#FBF5E8]">
+    <a href="#kandas" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-[#FF9933] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

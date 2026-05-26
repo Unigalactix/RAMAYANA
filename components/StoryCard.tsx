@@ -18,8 +18,9 @@ const StoryCard: React.FC<StoryCardProps> = ({ icon, title, description, link, c
       </p>
       <a
         href={link}
+        target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 bg-[#1E1E1E] text-white font-bold py-2 px-4 rounded-lg inline-flex items-center self-start hover:bg-black dark:bg-[#FBF5E8] dark:text-[#1E1E1E] dark:hover:bg-gray-200 transition-colors"
+        className="mt-4 bg-[#1E1E1E] text-white font-bold py-2 px-4 rounded-lg inline-flex items-center self-start hover:bg-black dark:bg-[#FBF5E8] dark:text-[#1E1E1E] dark:hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF9933]"
         aria-label={`Read story: ${title}`}
       >
         Read Story

@@ -1,12 +1,12 @@
 import React from 'react';
 
 const navLinks = [
-  { href: '#kandas', label: 'Kandas', color: 'hover:text-[#FF6B6B]' },
-  { href: '#characters', label: 'Characters', color: 'hover:text-[#4ECDC4]' },
-  { href: '#themes', label: 'Themes', color: 'hover:text-[#FFE66D]' },
+  { href: '#kandas', label: 'Kandas', color: 'hover:text-[#FF9933]' },
+  { href: '#characters', label: 'Characters', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
+  { href: '#themes', label: 'Themes', color: 'hover:text-[#FFD700]' },
   { href: '#stories', label: 'Stories', color: 'hover:text-[#F7B801]' },
-  { href: '#map', label: 'Map', color: 'hover:text-[#4ECDC4]' },
-  { href: '#family-tree', label: 'Family Tree', color: 'hover:text-[#FF6B6B]' },
+  { href: '#map', label: 'Map', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
+  { href: '#family-tree', label: 'Family Tree', color: 'hover:text-[#FF9933]' },
 ];
 
 const Navigation: React.FC = () => {
