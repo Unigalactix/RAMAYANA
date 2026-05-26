@@ -5,7 +5,7 @@ const navLinks = [
   { href: '#characters', label: 'Characters', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
   { href: '#themes', label: 'Themes', color: 'hover:text-[#FFD700]' },
   { href: '#stories', label: 'Stories', color: 'hover:text-[#F7B801]' },
-  { href: '#map', label: 'Map', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
+  { href: '#ask', label: 'Ask', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
   { href: '#family-tree', label: 'Family Tree', color: 'hover:text-[#FF9933]' },
 ];
 

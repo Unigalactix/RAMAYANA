@@ -7,6 +7,7 @@ import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
 import InteractiveMap from './components/InteractiveMap';
 import Navigation from './components/Navigation';
+import AskValmikiChatBox from './components/AskValmikiChatBox';
 import { stats, kandas, characters, themes, stories } from './constants';
 import { Kanda } from './types';
 import { BookIcon, CrownIcon, ForestIcon, MonkeyIcon, LeapIcon, WarIcon, ScrollIcon, BowIcon, LotusIcon, MaceIcon, TenHeadsIcon, DharmaWheelIcon, BalanceIcon, TempleIcon, DivineIcon, StorybookOpenIcon } from './components/Icons';
@@ -275,6 +276,20 @@ const App: React.FC = () => {
               </AnimateOnScroll>
             ))}
           </div>
+        </section>
+
+        <section id="ask" className="my-16 md:my-24" aria-labelledby="ask-heading">
+          <AnimateOnScroll>
+            <h2 id="ask-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
+              Ask <span className="text-[#005B96] dark:text-[#63B3ED]">Valmiki</span>
+            </h2>
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
+              Have a question about the Ramayana? Ask anything — characters, events, teachings, or sacred places.
+            </p>
+          </AnimateOnScroll>
+          <AnimateOnScroll delay={200}>
+            <AskValmikiChatBox />
+          </AnimateOnScroll>
         </section>
 
         <section id="map" className="my-16 md:my-24" aria-labelledby="map-heading">
