@@ -172,7 +172,7 @@ const App: React.FC = () => {
       <main className="container mx-auto px-6 py-12 md:py-20 relative z-10">
         <Header theme={theme} toggleTheme={toggleTheme} />
 
-        <section id="stats" className="my-16 md:my-24">
+        <section id="stats" className="my-16 md:my-24" aria-label="Key facts about the Ramayana">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {stats.map((stat, index) => (
               <AnimateOnScroll key={index} delay={index * 150}>
@@ -182,11 +182,14 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="kandas" className="my-16 md:my-24">
+        <section id="kandas" className="my-16 md:my-24" aria-labelledby="kandas-heading">
           <AnimateOnScroll>
-            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
+            <h2 id="kandas-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
               The Seven <span className="text-[#FF9933]">Kandas</span> (Books)
             </h2>
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
+              Each Kanda is a sacred chapter in Lord Rama's divine journey. Click any book to explore its key events and characters.
+            </p>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {kandas.map((kanda, index) => (
@@ -204,11 +207,14 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="characters" className="my-16 md:my-24">
+        <section id="characters" className="my-16 md:my-24" aria-labelledby="characters-heading">
           <AnimateOnScroll>
-            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
+            <h2 id="characters-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
               Character <span className="text-[#005B96] dark:text-[#63B3ED]">Archetypes</span>
             </h2>
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
+              The divine and human souls whose virtues and struggles illuminate the eternal path of Dharma.
+            </p>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {characters.map((character, index) => (
@@ -224,11 +230,14 @@ const App: React.FC = () => {
           </div>
         </section>
         
-        <section id="themes" className="my-16 md:my-24">
+        <section id="themes" className="my-16 md:my-24" aria-labelledby="themes-heading">
           <AnimateOnScroll>
-            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
+            <h2 id="themes-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
               Core <span className="text-[#FFD700]">Themes</span>
             </h2>
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
+              The timeless philosophical and spiritual teachings woven into every verse of this sacred epic.
+            </p>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {themes.map((theme, index) => (
@@ -244,11 +253,14 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="stories" className="my-16 md:my-24">
+        <section id="stories" className="my-16 md:my-24" aria-labelledby="stories-heading">
           <AnimateOnScroll>
-            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
+            <h2 id="stories-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
               Story <span className="text-[#F7B801]">Book</span>
             </h2>
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
+              Dive into individual tales from the Ramayana — each one a gem of wisdom, devotion, and heroism.
+            </p>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {stories.map((story, index) => (
@@ -265,9 +277,9 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="map" className="my-16 md:my-24">
+        <section id="map" className="my-16 md:my-24" aria-labelledby="map-heading">
           <AnimateOnScroll>
-            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
+            <h2 id="map-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
               Journey Across <span className="text-[#005B96] dark:text-[#63B3ED]">Ancient India</span>
             </h2>
             <p className="text-center text-lg max-w-3xl mx-auto mb-12 text-gray-700 dark:text-gray-300">
@@ -279,11 +291,14 @@ const App: React.FC = () => {
           </AnimateOnScroll>
         </section>
 
-        <section id="family-tree" className="my-16 md:my-24">
+        <section id="family-tree" className="my-16 md:my-24" aria-labelledby="family-tree-heading">
           <AnimateOnScroll>
-            <h2 className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-12">
+            <h2 id="family-tree-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
               The Lineage of <span className="text-[#FF9933]">Ikshvaku</span>
             </h2>
+            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
+              The sacred Solar Dynasty (Suryavansha) from which the divine Lord Rama descended.
+            </p>
           </AnimateOnScroll>
           <AnimateOnScroll delay={200}>
             <FamilyTree />
@@ -291,11 +306,28 @@ const App: React.FC = () => {
         </section>
 
 
-        <footer className="text-center py-12">
+        <footer className="text-center py-12 pb-32">
           <AnimateOnScroll>
+            {/* Devotional shloka */}
+            <p className="font-serif text-base md:text-lg italic text-[#4A2E2C] dark:text-[#FBF5E8] opacity-75 mb-6 max-w-2xl mx-auto" lang="sa">
+              "रामं दशरथं विद्धि मां विद्धि जनकात्मजाम् ।<br className="hidden md:block" />
+              अयोध्यां अटवीं विद्धि गच्छ तात यथासुखम् ॥"
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">
+              "Know Rama as Dasharatha; know me as Janaka's daughter; know the forest as Ayodhya — go, dear one, at peace."
+              <br /><span className="italic">— Kaikeyi's words, Valmiki Ramayana, Ayodhya Kanda</span>
+            </p>
+            <div className="flex items-center justify-center gap-4 mb-8" aria-hidden="true">
+              <div className="h-px w-16 bg-[#FF9933] opacity-60"></div>
+              <span className="text-[#FF9933] text-xl">✦</span>
+              <span className="text-[#FFD700] text-2xl">❀</span>
+              <span className="text-[#FF9933] text-xl">✦</span>
+              <div className="h-px w-16 bg-[#FF9933] opacity-60"></div>
+            </div>
             <p className="font-anton text-3xl md:text-5xl uppercase tracking-wide">
               A timeless epic of <br/> <span className="text-[#005B96] dark:text-[#63B3ED] underline decoration-wavy decoration-4 underline-offset-8">Dharma, Devotion, and Duty</span>
             </p>
+            <p className="mt-6 font-anton text-lg text-[#FF9933] tracking-widest" lang="sa" aria-label="Jai Sri Ram">जय श्री राम</p>
           </AnimateOnScroll>
         </footer>
       </main>

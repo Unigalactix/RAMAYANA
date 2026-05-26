@@ -10,10 +10,19 @@ const InteractiveMap: React.FC = () => {
     setActiveLocation(activeLocation?.id === location.id ? null : location);
   };
   
+  const handleMarkerKeyDown = (location: MapLocation, e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setActiveLocation(activeLocation?.id === location.id ? null : location);
+    } else if (e.key === 'Escape') {
+      setActiveLocation(null);
+    }
+  };
+
   const handleClose = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     setActiveLocation(null);
-  }
+  };
 
   return (
     <div className="map-container" onClick={() => handleClose()}>
@@ -32,14 +41,16 @@ const InteractiveMap: React.FC = () => {
           className="map-marker"
           style={{ top: location.coords.y, left: location.coords.x }}
           onClick={(e) => handleMarkerClick(location, e)}
+          onKeyDown={(e) => handleMarkerKeyDown(location, e)}
           aria-label={`Location: ${location.name}`}
+          aria-expanded={activeLocation?.id === location.id}
           role="button"
           tabIndex={0}
         >
           <div className="map-marker-dot"></div>
           <div className="map-marker-pulse"></div>
           {/* Desktop Tooltip */}
-          <div className={`map-tooltip ${activeLocation?.id === location.id ? 'is-active' : ''}`}>
+          <div className={`map-tooltip ${activeLocation?.id === location.id ? 'is-active' : ''}`} role="tooltip">
             <h4>{location.name}</h4>
             <p>{location.description}</p>
           </div>
@@ -49,6 +60,7 @@ const InteractiveMap: React.FC = () => {
       <div 
         className={`map-info-panel ${activeLocation ? 'is-active' : ''}`}
         onClick={(e) => e.stopPropagation()}
+        aria-live="polite"
       >
         {activeLocation && (
           <>
