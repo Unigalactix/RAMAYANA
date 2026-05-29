@@ -1,29 +1,58 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Ramayana Codex
 
-# Run and deploy your AI Studio app
+An immersive, single-page tribute to the **Ramayana** — Valmiki's Adi Kavya — reimagined as a premium interactive codex of mythic trading cards, sacred geography, and the lineage of the Suryavansha.
 
-This contains everything you need to run your app locally.
+🔗 **Live site:** [unigalactix.github.io/RAMAYANA](https://unigalactix.github.io/RAMAYANA/)
 
-View your app in AI Studio: https://ai.studio/apps/drive/10An2-J1Dc6dhZ2XJvcAHz3QCmdy7DLMj
+## Features
+
+- **Pantheon** — Flip-card portraits of Rama, Sita, Lakshmana, Hanuman, Ravana, and the wider cast, each with stats, Sanskrit names, sigils, and lore.
+- **Seven Kandas** — An interactive timeline through Bala, Ayodhya, Aranya, Kishkindha, Sundara, Yuddha, and Uttara Kanda.
+- **Sacred Path** — The 14-year journey from Ayodhya to Lanka, marking every halt, ashram, temple, and turning point along the way.
+- **Themes & Stories** — Curated meditations on dharma, devotion, sacrifice, and the great sub-stories of the epic.
+- **Solar Dynasty** — The Suryavansha family tree from Brahma to Lava and Kusha.
+
+## Tech Stack
+
+- React 19 + TypeScript
+- Vite 6
+- Tailwind CSS (CDN)
+- Deployed to GitHub Pages via GitHub Actions
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js 20+
 
+```bash
+npm install
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Open the URL printed in the terminal (typically `http://localhost:5173`).
 
-## Deploy to GitHub Pages
+## Build
 
-This repository includes a GitHub Actions workflow that builds the app and deploys the `dist` output to the `gh-pages` branch.
+```bash
+npm run build      # outputs to dist/
+npm run preview    # serve the production build locally
+```
 
-- Push to the `deploy` branch (or trigger the workflow manually from the Actions tab) to start deployment.
-- The workflow sets `VITE_BASE` automatically to the repository path so the site will be served correctly from GitHub Pages.
+## Deployment
 
-If you want to change the branch that triggers deployment, edit `.github/workflows/gh-pages.yml`.
+Pushes to `main` trigger `.github/workflows/gh-pages.yml`, which builds with `VITE_BASE="./"` (so the bundle works at the repo subpath) and publishes via the GitHub Pages workflow.
+
+## Project Structure
+
+```
+App.tsx              # page composition
+index.html           # Tailwind config, fonts, global styles
+constants.ts         # characters, kandas, themes, stories, family tree
+types.ts
+components/          # CharacterCard, KandaTimeline, InteractiveMap, FamilyTree, …
+.github/workflows/   # gh-pages deploy
+```
+
+## Credits
+
+Design, code, and curation by **Unigalactix**. The source text honors Valmiki's Ramayana and the traditions that have carried it for millennia.
+
