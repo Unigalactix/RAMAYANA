@@ -10,6 +10,10 @@ import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
 import InteractiveMap from './components/InteractiveMap';
 import Temples from './components/Temples';
+import CommandPalette from './components/CommandPalette';
+import GlossaryDrawer from './components/GlossaryDrawer';
+import VerseOfTheDay from './components/VerseOfTheDay';
+import ClosingShloka from './components/ClosingShloka';
 import { characters, kandas, themesData, stats, stories } from './constants';
 import { Character, Kanda } from './types';
 
@@ -67,6 +71,9 @@ const App: React.FC = () => {
           </div>
         </Reveal>
       </section>
+
+      {/* VERSE OF THE DAY */}
+      <VerseOfTheDay />
 
       {/* CHARACTERS — THE PANTHEON */}
       <section id="characters" className="max-w-7xl mx-auto px-6 py-24 md:py-32">
@@ -169,6 +176,9 @@ const App: React.FC = () => {
         <Reveal delay={100}><FamilyTree /></Reveal>
       </section>
 
+      {/* PHALA-ŚRUTI / CLOSING SHLOKA */}
+      <ClosingShloka />
+
       {/* FOOTER */}
       <footer className="max-w-4xl mx-auto px-6 py-20 text-center">
         <p className="font-sanskrit text-lg md:text-xl text-goldlight leading-relaxed">
@@ -191,6 +201,10 @@ const App: React.FC = () => {
 
       {selectedChar && <CharacterModal character={selectedChar} onClose={() => setSelectedChar(null)} />}
       {selectedKanda && <KandaDetailModal kanda={selectedKanda} onClose={() => setSelectedKanda(null)} />}
+
+      {/* Global overlays */}
+      <CommandPalette />
+      <GlossaryDrawer />
     </div>
   );
 };
