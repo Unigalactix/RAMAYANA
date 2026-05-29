@@ -6,6 +6,7 @@ const links = [
   { href: '#themes', label: 'Themes' },
   { href: '#stories', label: 'Stories' },
   { href: '#map', label: 'Path' },
+  { href: '#temples', label: 'Temples' },
   { href: '#lineage', label: 'Lineage' },
 ];
 

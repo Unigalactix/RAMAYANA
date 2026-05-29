@@ -9,6 +9,7 @@ import ThemeCard from './components/ThemeCard';
 import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
 import InteractiveMap from './components/InteractiveMap';
+import Temples from './components/Temples';
 import { characters, kandas, themesData, stats, stories } from './constants';
 import { Character, Kanda } from './types';
 
@@ -35,6 +36,23 @@ const App: React.FC = () => {
       <Navigation />
 
       <Hero />
+
+      {/* MANGALA-CHARANAM — devotional invocation */}
+      <section className="max-w-4xl mx-auto px-6 pt-10 md:pt-14 relative z-10 text-center">
+        <Reveal>
+          <div className="glass rounded-2xl px-6 md:px-10 py-8 md:py-10">
+            <div className="font-cinzel text-[11px] tracking-[.4em] uppercase text-goldlight/80 mb-4">Mangala-charanam · मङ्गलाचरण</div>
+            <p className="font-sanskrit text-xl md:text-2xl text-goldlight leading-relaxed">
+              मङ्गलं भगवान् विष्णुः मङ्गलं गरुडध्वजः ।<br />
+              मङ्गलं पुण्डरीकाक्षो मङ्गलाय तनो हरिः ॥
+            </p>
+            <p className="mt-4 font-serif italic text-[#d8cdb0]">
+              “Auspicious is the Lord Vishnu, auspicious is He of the Garuda banner; auspicious is the Lotus-eyed One — may Hari grant us all that is auspicious.”
+            </p>
+            <p className="mt-6 font-sanskrit text-2xl md:text-3xl text-saffron tracking-widest">॥ श्री राम जय राम जय जय राम ॥</p>
+          </div>
+        </Reveal>
+      </section>
 
       {/* STATS */}
       <section className="max-w-6xl mx-auto px-6 -mt-12 md:-mt-20 relative z-10">
@@ -127,6 +145,18 @@ const App: React.FC = () => {
         <Reveal delay={100}><InteractiveMap /></Reveal>
       </section>
 
+      {/* TEMPLES */}
+      <section id="temples" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Sri Rama Kshetras · श्री राम क्षेत्राणि"
+            title={<>Famous <span className="text-gradient-saffron">Rama Temples</span> of India</>}
+            subtitle="From the Sarayu of Ayodhya to the Kaveri of the south — the great kshetras where Sri Rama is worshipped, each cradling a living legend."
+          />
+        </Reveal>
+        <Reveal delay={100}><Temples /></Reveal>
+      </section>
+
       {/* LINEAGE */}
       <section id="lineage" className="max-w-6xl mx-auto px-6 py-20 md:py-28">
         <Reveal>
@@ -153,6 +183,9 @@ const App: React.FC = () => {
           A timeless epic of<br />Dharma, Devotion, and Duty
         </h3>
         <p className="mt-6 font-sanskrit text-2xl text-saffron tracking-widest">जय श्री राम</p>
+        <p className="mt-4 font-serif italic text-[#c9bd9b] max-w-xl mx-auto">
+          “रामो विग्रहवान् धर्मः” — Rama is dharma embodied. May His name guard every breath.
+        </p>
         <p className="mt-10 text-xs text-[#a99875] tracking-widest uppercase">© Ramayana Codex · Built with reverence</p>
       </footer>
 
