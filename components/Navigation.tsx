@@ -1,28 +1,22 @@
 import React from 'react';
 
-const navLinks = [
-  { href: '#kandas', label: 'Kandas', color: 'hover:text-[#FF9933]' },
-  { href: '#characters', label: 'Characters', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
-  { href: '#themes', label: 'Themes', color: 'hover:text-[#FFD700]' },
-  { href: '#stories', label: 'Stories', color: 'hover:text-[#F7B801]' },
-  { href: '#ask', label: 'Ask', color: 'hover:text-[#005B96] dark:hover:text-[#63B3ED]' },
-  { href: '#family-tree', label: 'Family Tree', color: 'hover:text-[#FF9933]' },
+const links = [
+  { href: '#characters', label: 'Pantheon' },
+  { href: '#kandas', label: 'Kandas' },
+  { href: '#themes', label: 'Themes' },
+  { href: '#stories', label: 'Stories' },
+  { href: '#map', label: 'Map' },
+  { href: '#lineage', label: 'Lineage' },
+  { href: '#ask', label: 'Ask' },
 ];
 
-const Navigation: React.FC = () => {
-  return (
-    <nav className="main-nav font-anton">
-      {navLinks.map((link) => (
-        <a
-          key={link.href}
-          href={link.href}
-          className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base uppercase tracking-wider text-[#1E1E1E] dark:text-[#FBF5E8] transition-colors duration-300 ${link.color} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#FDF6E9] dark:focus:ring-offset-[#2a1a19] focus:ring-[#1E1E1E] dark:focus:ring-[#FBF5E8]`}
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
-  );
-};
+const Navigation: React.FC = () => (
+  <nav className="topnav no-scrollbar" aria-label="Primary">
+    <a href="#top" className="!text-goldlight font-display !text-[13px]">॥ RAMAYANA ॥</a>
+    {links.map(l => (
+      <a key={l.href} href={l.href}>{l.label}</a>
+    ))}
+  </nav>
+);
 
 export default Navigation;

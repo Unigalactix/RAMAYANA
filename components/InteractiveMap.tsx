@@ -1,75 +1,49 @@
 import React, { useState } from 'react';
 import { mapLocations } from '../constants';
-import type { MapLocation } from '../types';
 
 const InteractiveMap: React.FC = () => {
-  const [activeLocation, setActiveLocation] = useState<MapLocation | null>(null);
-
-  const handleMarkerClick = (location: MapLocation, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setActiveLocation(activeLocation?.id === location.id ? null : location);
-  };
-  
-  const handleMarkerKeyDown = (location: MapLocation, e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      setActiveLocation(activeLocation?.id === location.id ? null : location);
-    } else if (e.key === 'Escape') {
-      setActiveLocation(null);
-    }
-  };
-
-  const handleClose = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setActiveLocation(null);
-  };
+  const [active, setActive] = useState<string | null>(null);
+  const activeLoc = mapLocations.find(l => l.id === active);
 
   return (
-    <div className="map-container" onClick={() => handleClose()}>
-      <svg
-        className="map-svg"
-        viewBox="0 0 350 500"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-label="Map of Ancient India"
-      >
-        <path className="map-india" d="M175 10 C 120 20, 80 80, 85 150 L 70 200 C 60 250, 90 350, 150 420 L 175 450 L 200 420 C 260 350, 290 250, 280 200 L 265 150 C 270 80, 230 20, 175 10 Z" />
-        <path className="map-sri-lanka" d="M195,460 C185,465 180,480 190,495 L195,498 L200,495 C210,480 205,465 195,460 Z" />
-      </svg>
-      {mapLocations.map((location) => (
-        <div
-          key={location.id}
-          className="map-marker"
-          style={{ top: location.coords.y, left: location.coords.x }}
-          onClick={(e) => handleMarkerClick(location, e)}
-          onKeyDown={(e) => handleMarkerKeyDown(location, e)}
-          aria-label={`Location: ${location.name}`}
-          aria-expanded={activeLocation?.id === location.id}
-          role="button"
-          tabIndex={0}
-        >
-          <div className="map-marker-dot"></div>
-          <div className="map-marker-pulse"></div>
-          {/* Desktop Tooltip */}
-          <div className={`map-tooltip ${activeLocation?.id === location.id ? 'is-active' : ''}`} role="tooltip">
-            <h4>{location.name}</h4>
-            <p>{location.description}</p>
-          </div>
-        </div>
-      ))}
-       {/* Mobile Info Panel */}
-      <div 
-        className={`map-info-panel ${activeLocation ? 'is-active' : ''}`}
-        onClick={(e) => e.stopPropagation()}
-        aria-live="polite"
-      >
-        {activeLocation && (
-          <>
-            <button className="map-info-close" onClick={() => handleClose()} aria-label="Close location details">&times;</button>
-            <h4>{activeLocation.name}</h4>
-            <p>{activeLocation.description}</p>
-          </>
-        )}
+    <div className="map-wrap">
+      <div className="relative">
+        <svg className="map-svg" viewBox="0 0 100 130" preserveAspectRatio="xMidYMid meet" aria-label="Map of ancient Bharata showing key Ramayana locations">
+          {/* Stylized India outline */}
+          <path d="M50 8 C 62 6, 72 12, 78 22 C 82 32, 80 40, 76 46 C 72 52, 70 60, 66 68 C 62 78, 58 88, 55 96 C 53 102, 52 108, 50 112 C 48 108, 46 102, 44 96 C 40 86, 36 76, 32 66 C 28 56, 24 46, 26 36 C 28 24, 38 12, 50 8 Z" />
+          {/* Sri Lanka */}
+          <ellipse cx="58" cy="120" rx="6" ry="7" />
+        </svg>
+
+        {mapLocations.map(loc => (
+          <button
+            key={loc.id}
+            className="map-marker"
+            style={{ left: loc.coords.x, top: loc.coords.y }}
+            onMouseEnter={() => setActive(loc.id)}
+            onMouseLeave={() => setActive(null)}
+            onFocus={() => setActive(loc.id)}
+            onBlur={() => setActive(null)}
+            onClick={() => setActive(prev => prev === loc.id ? null : loc.id)}
+            aria-label={loc.name}
+          >
+            <span className="map-pulse" />
+            <span className="map-dot" />
+            <div className={`map-tip ${active === loc.id ? 'active' : ''}`} role="tooltip">
+              <h4>{loc.name}</h4>
+              <p>{loc.description}</p>
+            </div>
+          </button>
+        ))}
       </div>
+
+      {/* Mobile-friendly info panel */}
+      {activeLoc && (
+        <div className="md:hidden mt-4 glass p-4">
+          <h4 className="font-cinzel text-goldlight">{activeLoc.name}</h4>
+          <p className="font-serif text-[#ece2c8] mt-1">{activeLoc.description}</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,353 +1,187 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Header from './components/Header';
-import StatCard from './components/StatCard';
-import BenefitCard from './components/BenefitCard';
+import React, { useEffect, useRef, useState } from 'react';
+import Navigation from './components/Navigation';
+import Hero from './components/Hero';
+import CharacterCard from './components/CharacterCard';
+import CharacterModal from './components/CharacterModal';
+import KandaTimeline from './components/KandaTimeline';
 import KandaDetailModal from './components/KandaDetailModal';
+import ThemeCard from './components/ThemeCard';
 import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
 import InteractiveMap from './components/InteractiveMap';
-import Navigation from './components/Navigation';
 import AskValmikiChatBox from './components/AskValmikiChatBox';
-import { stats, kandas, characters, themes, stories } from './constants';
-import { Kanda } from './types';
-import { BookIcon, CrownIcon, ForestIcon, MonkeyIcon, LeapIcon, WarIcon, ScrollIcon, BowIcon, LotusIcon, MaceIcon, TenHeadsIcon, DharmaWheelIcon, BalanceIcon, TempleIcon, DivineIcon, StorybookOpenIcon } from './components/Icons';
+import { characters, kandas, themesData, stats, stories } from './constants';
+import { Character, Kanda } from './types';
 
-const AnimateOnScroll: React.FC<{ children: React.ReactNode, className?: string, delay?: number }> = ({ children, className, delay = 0 }) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.unobserve(entry.target);
-                }
-            },
-            {
-                threshold: 0.1,
-            }
-        );
-
-        const currentRef = ref.current;
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
-        return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
-            }
-        };
-    }, []);
-
-    return (
-        <div 
-            ref={ref} 
-            className={`${className || ''} scroll-animate ${isVisible ? 'is-visible' : ''}`}
-            style={{ transitionDelay: `${delay}ms` }}
-        >
-            {children}
-        </div>
-    );
+const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, delay = 0, className }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); obs.unobserve(el); } }, { threshold: 0.12 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={`reveal ${shown ? 'in' : ''} ${className ?? ''}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
 };
 
+const SectionTitle: React.FC<{ eyebrow: string; title: React.ReactNode; subtitle?: React.ReactNode }> = ({ eyebrow, title, subtitle }) => (
+  <div className="text-center mb-12">
+    <div className="font-cinzel text-[11px] tracking-[.4em] uppercase text-goldlight/80 mb-3">{eyebrow}</div>
+    <h2 className="font-display text-4xl md:text-6xl text-gradient-gold leading-tight">{title}</h2>
+    {subtitle && <p className="mt-4 max-w-2xl mx-auto font-serif text-lg text-[#ece2c8]">{subtitle}</p>}
+    <div className="hr-ornate mt-6"><span>✦</span></div>
+  </div>
+);
+
 const App: React.FC = () => {
+  const [selectedChar, setSelectedChar] = useState<Character | null>(null);
   const [selectedKanda, setSelectedKanda] = useState<Kanda | null>(null);
-  const [viewedKandas, setViewedKandas] = useState<Set<string>>(new Set());
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const storedTheme = window.localStorage.getItem('theme');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
-        return 'dark';
-      }
-    }
-    return 'light';
-  });
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-
-  const kandaIcons: { [key: string]: React.ReactNode } = {
-    'Bala Kanda': <BookIcon />,
-    'Ayodhya Kanda': <CrownIcon />,
-    'Aranya Kanda': <ForestIcon />,
-    'Kishkindha Kanda': <MonkeyIcon />,
-    'Sundara Kanda': <LeapIcon />,
-    'Yuddha Kanda': <WarIcon />,
-    'Uttara Kanda': <ScrollIcon />,
-  };
-
-  const characterIcons: { [key: string]: React.ReactNode } = {
-    'Rama': <BowIcon />,
-    'Sita': <LotusIcon />,
-    'Hanuman': <MaceIcon />,
-    'Ravana': <TenHeadsIcon />,
-  };
-  
-  const themeIcons: { [key: string]: React.ReactNode } = {
-    'The Conflict and Complexity of Dharma': <DharmaWheelIcon />,
-    'The Human and the Divine': <DivineIcon />,
-    'The Triumph of Good over Evil': <BalanceIcon />,
-    'The Ideal of Kingship: Ramarajya': <TempleIcon />,
-  };
-
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      window.requestAnimationFrame(() => {
-        setScrollY(window.scrollY);
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleOpenModal = (kanda: Kanda) => {
-    setSelectedKanda(kanda);
-    document.body.style.overflow = 'hidden';
-  }
-
-  const handleCloseModal = () => {
-    if (selectedKanda) {
-      setViewedKandas(prev => new Set(prev).add(selectedKanda.title));
-    }
-    setSelectedKanda(null);
-    document.body.style.overflow = '';
-  }
 
   return (
-    <div className="min-h-screen text-[#4A2E2C] dark:text-[#FBF5E8] overflow-hidden relative">
-      {/* START: Decorative Background SVGs */}
-      <div aria-hidden="true" className="hidden md:block absolute top-24 -left-16 -z-10 opacity-10 text-[#FFD700] dark:text-yellow-300/10">
-        <svg width="400" height="400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 21C12 21 15.3333 16 21 16C21 12 18 10 18 10C18 10 20 6 17 4C14 2 12 5 12 5" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12 21C12 21 8.66667 16 3 16C3 12 6 10 6 10C6 10 4 6 7 4C10 2 12 5 12 5" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
-       <div aria-hidden="true" className="hidden md:block absolute top-1/3 -right-24 -z-10 opacity-10 text-[#005B96] dark:text-blue-300/10">
-        <svg width="500" height="500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="currentColor" strokeWidth="0.5"/>
-            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" strokeWidth="0.5"/>
-            <path d="M12 3v2.25m0 13.5V21m-6.75-9.75H3m18 0h-2.25m-11.25-4.5L5.625 5.625m12.75 0l-2.121 2.121M5.625 18.375l2.121-2.121m8.623-8.623l2.121-2.121" stroke="currentColor" strokeWidth="0.5"/>
-        </svg>
-      </div>
-      <div aria-hidden="true" className="hidden md:block absolute bottom-16 -left-20 -z-10 opacity-10 text-[#FF9933] dark:text-orange-300/10">
-        <svg width="400" height="400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 21C3 15.4772 7.47715 11 13 11H21" stroke="currentColor" strokeWidth="0.5"/>
-            <path d="M21 3L3 21" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2"/>
-            <path d="M11 21C11 17.134 7.86599 14 4 14" stroke="currentColor" strokeWidth="0.5"/>
-            <path d="M21 3C15.4772 3 11 7.47715 11 13V21" stroke="currentColor" strokeWidth="0.5"/>
-        </svg>
-      </div>
-      {/* END: Decorative Background SVGs */}
-      <div 
-        className="absolute top-0 left-0 w-32 h-32 md:w-64 md:h-64 bg-[#FF9933] rounded-full opacity-30 dark:opacity-20 -translate-x-1/4 -translate-y-1/4"
-        style={{ transform: `translateX(-25%) translateY(-25%) translateY(${scrollY * 0.2}px)` }}
-      ></div>
-      <div 
-        className="absolute bottom-0 right-0 w-48 h-48 md:w-96 md:h-96 bg-[#005B96] rounded-full opacity-30 dark:opacity-20 translate-x-1/3 translate-y-1/3"
-        style={{ transform: `translateX(33.33%) translateY(33.33%) translateY(${scrollY * -0.1}px)` }}
-      ></div>
-      <div 
-        className="absolute top-1/2 left-1/3 w-24 h-24 md:w-48 md:h-48 bg-[#FFD700] rounded-xl opacity-30 dark:opacity-20 -translate-x-1/2 -translate-y-1/2 rotate-45"
-        style={{ transform: `translateX(-50%) translateY(-50%) rotate(45deg) translateY(${scrollY * 0.15}px)` }}
-      ></div>
-      
+    <div id="top" className="relative">
       <Navigation />
 
-      <main className="container mx-auto px-6 py-12 md:py-20 relative z-10">
-        <Header theme={theme} toggleTheme={toggleTheme} />
+      <Hero />
 
-        <section id="stats" className="my-16 md:my-24" aria-label="Key facts about the Ramayana">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {stats.map((stat, index) => (
-              <AnimateOnScroll key={index} delay={index * 150}>
-                <StatCard value={stat.value} label={stat.label} color={stat.color} />
-              </AnimateOnScroll>
+      {/* STATS */}
+      <section className="max-w-6xl mx-auto px-6 -mt-12 md:-mt-20 relative z-10">
+        <Reveal>
+          <div className="glass grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden">
+            {stats.map((s, i) => (
+              <div key={i} className="p-6 md:p-8 text-center bg-[rgba(20,14,30,0.4)]">
+                <div className="font-display text-4xl md:text-5xl text-gradient-gold">{s.value}</div>
+                <div className="mt-2 font-cinzel uppercase tracking-[.2em] text-[10px] text-[#c9bd9b]">{s.label}</div>
+              </div>
             ))}
           </div>
-        </section>
+        </Reveal>
+      </section>
 
-        <section id="kandas" className="my-16 md:my-24" aria-labelledby="kandas-heading">
-          <AnimateOnScroll>
-            <h2 id="kandas-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              The Seven <span className="text-[#FF9933]">Kandas</span> (Books)
-            </h2>
-            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
-              Each Kanda is a sacred chapter in Lord Rama's divine journey. Click any book to explore its key events and characters.
-            </p>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {kandas.map((kanda, index) => (
-              <AnimateOnScroll key={index} delay={index * 100}>
-                <BenefitCard
-                  icon={kandaIcons[kanda.title] || <BookIcon />}
-                  title={kanda.title}
-                  description={kanda.description}
-                  color={index % 3 === 0 ? 'bg-[#005B96]' : index % 3 === 1 ? 'bg-[#FFD700]' : 'bg-[#FF9933]'}
-                  onClick={() => handleOpenModal(kanda)}
-                  isViewed={viewedKandas.has(kanda.title)}
-                />
-              </AnimateOnScroll>
-            ))}
-          </div>
-        </section>
+      {/* CHARACTERS — THE PANTHEON */}
+      <section id="characters" className="max-w-7xl mx-auto px-6 py-24 md:py-32">
+        <Reveal>
+          <SectionTitle
+            eyebrow="The Pantheon · पात्र-संग्रह"
+            title={<>Holographic <span className="text-gradient-saffron">Character Codex</span></>}
+            subtitle="Hover to feel the foil shift. Click any card to flip it and read the codex of the soul behind it — their lineage, abilities, and the moments that wrote them into eternity."
+          />
+        </Reveal>
 
-        <section id="characters" className="my-16 md:my-24" aria-labelledby="characters-heading">
-          <AnimateOnScroll>
-            <h2 id="characters-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              Character <span className="text-[#005B96] dark:text-[#63B3ED]">Archetypes</span>
-            </h2>
-            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
-              The divine and human souls whose virtues and struggles illuminate the eternal path of Dharma.
-            </p>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {characters.map((character, index) => (
-              <AnimateOnScroll key={index} delay={index * 100}>
-                <BenefitCard
-                  icon={characterIcons[character.title] || <BookIcon />}
-                  title={character.title}
-                  description={character.description}
-                  color={index % 2 === 0 ? 'bg-[#FF9933]' : 'bg-[#F7B801]'}
-                />
-              </AnimateOnScroll>
-            ))}
-          </div>
-        </section>
-        
-        <section id="themes" className="my-16 md:my-24" aria-labelledby="themes-heading">
-          <AnimateOnScroll>
-            <h2 id="themes-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              Core <span className="text-[#FFD700]">Themes</span>
-            </h2>
-            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
-              The timeless philosophical and spiritual teachings woven into every verse of this sacred epic.
-            </p>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {themes.map((theme, index) => (
-              <AnimateOnScroll key={index} delay={index * 100}>
-                <BenefitCard
-                  icon={themeIcons[theme.title] || <BookIcon />}
-                  title={theme.title}
-                  description={theme.description}
-                  color={index % 2 === 0 ? 'bg-[#005B96]' : 'bg-[#FFD700]'}
-                />
-              </AnimateOnScroll>
-            ))}
-          </div>
-        </section>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+          {characters.map((c, i) => (
+            <Reveal key={c.id} delay={(i % 4) * 80}>
+              <CharacterCard character={c} onOpen={setSelectedChar} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
-        <section id="stories" className="my-16 md:my-24" aria-labelledby="stories-heading">
-          <AnimateOnScroll>
-            <h2 id="stories-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              Story <span className="text-[#F7B801]">Book</span>
-            </h2>
-            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
-              Dive into individual tales from the Ramayana — each one a gem of wisdom, devotion, and heroism.
-            </p>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {stories.map((story, index) => (
-              <AnimateOnScroll key={index} delay={index * 100}>
-                <StoryCard
-                  icon={<StorybookOpenIcon />}
-                  title={story.title}
-                  description={story.description}
-                  link={story.link}
-                  color={index % 3 === 0 ? 'bg-[#FF9933]' : index % 3 === 1 ? 'bg-[#005B96]' : 'bg-[#FFD700]'}
-                />
-              </AnimateOnScroll>
-            ))}
-          </div>
-        </section>
+      {/* KANDAS TIMELINE */}
+      <section id="kandas" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="The Seven Books · सप्त काण्ड"
+            title={<>The <span className="text-gradient-saffron">Seven Kandas</span></>}
+            subtitle="From a divine birth in Ayodhya to a queen returning to the earth — walk the seven sacred books of Valmiki’s Ramayana."
+          />
+        </Reveal>
+        <Reveal delay={100}>
+          <KandaTimeline kandas={kandas} onOpen={setSelectedKanda} />
+        </Reveal>
+      </section>
 
-        <section id="ask" className="my-16 md:my-24" aria-labelledby="ask-heading">
-          <AnimateOnScroll>
-            <h2 id="ask-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              Ask <span className="text-[#005B96] dark:text-[#63B3ED]">Valmiki</span>
-            </h2>
-            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
-              Have a question about the Ramayana? Ask anything — characters, events, teachings, or sacred places.
-            </p>
-          </AnimateOnScroll>
-          <AnimateOnScroll delay={200}>
-            <AskValmikiChatBox />
-          </AnimateOnScroll>
-        </section>
+      {/* THEMES */}
+      <section id="themes" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Eternal Currents · सनातन भाव"
+            title={<>The <span className="text-gradient-saffron">Living Themes</span></>}
+            subtitle="The Ramayana is less a story than a mirror — these are the eternal questions it holds up to every age."
+          />
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {themesData.map((t, i) => (
+            <Reveal key={t.title} delay={i * 80}><ThemeCard theme={t} /></Reveal>
+          ))}
+        </div>
+      </section>
 
-        <section id="map" className="my-16 md:my-24" aria-labelledby="map-heading">
-          <AnimateOnScroll>
-            <h2 id="map-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              Journey Across <span className="text-[#005B96] dark:text-[#63B3ED]">Ancient India</span>
-            </h2>
-            <p className="text-center text-lg max-w-3xl mx-auto mb-12 text-gray-700 dark:text-gray-300">
-              Click on the markers to explore the key locations that set the stage for this epic tale.
-            </p>
-          </AnimateOnScroll>
-          <AnimateOnScroll delay={200}>
-            <InteractiveMap />
-          </AnimateOnScroll>
-        </section>
+      {/* STORIES */}
+      <section id="stories" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="The Storybook · कथा-कोश"
+            title={<>Tales from the <span className="text-gradient-saffron">Epic</span></>}
+            subtitle="Eighteen tales — each a single gem in the necklace of the Ramayana. Tap any to read its full retelling."
+          />
+        </Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {stories.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 3) * 80}><StoryCard story={s} /></Reveal>
+          ))}
+        </div>
+      </section>
 
-        <section id="family-tree" className="my-16 md:my-24" aria-labelledby="family-tree-heading">
-          <AnimateOnScroll>
-            <h2 id="family-tree-heading" className="text-4xl md:text-6xl font-anton text-center uppercase tracking-wider text-[#4A2E2C] dark:text-[#FBF5E8] mb-4">
-              The Lineage of <span className="text-[#FF9933]">Ikshvaku</span>
-            </h2>
-            <p className="text-center text-base text-gray-600 dark:text-gray-400 italic mb-10 max-w-2xl mx-auto">
-              The sacred Solar Dynasty (Suryavansha) from which the divine Lord Rama descended.
-            </p>
-          </AnimateOnScroll>
-          <AnimateOnScroll delay={200}>
-            <FamilyTree />
-          </AnimateOnScroll>
-        </section>
+      {/* MAP */}
+      <section id="map" className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Sacred Geography · पुण्य-भूमि"
+            title={<>The <span className="text-gradient-saffron">Map of the Epic</span></>}
+            subtitle="Hover the wax-sealed markers to walk from Ayodhya to Lanka."
+          />
+        </Reveal>
+        <Reveal delay={100}><InteractiveMap /></Reveal>
+      </section>
 
+      {/* LINEAGE */}
+      <section id="lineage" className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="House of Ikshvaku · सूर्य-वंश"
+            title={<>The <span className="text-gradient-saffron">Solar Dynasty</span></>}
+            subtitle="The Suryavansha — the line of kings from which the avatar descended."
+          />
+        </Reveal>
+        <Reveal delay={100}><FamilyTree /></Reveal>
+      </section>
 
-        <footer className="text-center py-12 pb-32">
-          <AnimateOnScroll>
-            {/* Devotional shloka */}
-            <p className="font-serif text-base md:text-lg italic text-[#4A2E2C] dark:text-[#FBF5E8] opacity-75 mb-6 max-w-2xl mx-auto" lang="sa">
-              "रामं दशरथं विद्धि मां विद्धि जनकात्मजाम् ।<br className="hidden md:block" />
-              अयोध्यां अटवीं विद्धि गच्छ तात यथासुखम् ॥"
-            </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">
-              "Know Rama as Dasharatha; know me as Janaka's daughter; know the forest as Ayodhya — go, dear one, at peace."
-              <br /><span className="italic">— Kaikeyi's words, Valmiki Ramayana, Ayodhya Kanda</span>
-            </p>
-            <div className="flex items-center justify-center gap-4 mb-8" aria-hidden="true">
-              <div className="h-px w-16 bg-[#FF9933] opacity-60"></div>
-              <span className="text-[#FF9933] text-xl">✦</span>
-              <span className="text-[#FFD700] text-2xl">❀</span>
-              <span className="text-[#FF9933] text-xl">✦</span>
-              <div className="h-px w-16 bg-[#FF9933] opacity-60"></div>
-            </div>
-            <p className="font-anton text-3xl md:text-5xl uppercase tracking-wide">
-              A timeless epic of <br/> <span className="text-[#005B96] dark:text-[#63B3ED] underline decoration-wavy decoration-4 underline-offset-8">Dharma, Devotion, and Duty</span>
-            </p>
-            <p className="mt-6 font-anton text-lg text-[#FF9933] tracking-widest" lang="sa" aria-label="Jai Sri Ram">जय श्री राम</p>
-          </AnimateOnScroll>
-        </footer>
-      </main>
-      
-      {selectedKanda && <KandaDetailModal kanda={selectedKanda} onClose={handleCloseModal} />}
+      {/* ASK */}
+      <section id="ask" className="max-w-4xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Inquire of the Sage · वाल्मीकि से पूछिए"
+            title={<>Ask <span className="text-gradient-saffron">Valmiki</span></>}
+            subtitle="Ask anything about the characters, places, or teachings of the epic."
+          />
+        </Reveal>
+        <Reveal delay={100}><AskValmikiChatBox /></Reveal>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="max-w-4xl mx-auto px-6 py-20 text-center">
+        <p className="font-sanskrit text-lg md:text-xl text-goldlight leading-relaxed">
+          रामं दशरथं विद्धि मां विद्धि जनकात्मजाम् ।<br />
+          अयोध्यां अटवीं विद्धि गच्छ तात यथासुखम् ॥
+        </p>
+        <p className="mt-4 font-serif italic text-[#c9bd9b] max-w-xl mx-auto">
+          “Know Rama as Dasharatha; know me as Janaka’s daughter; know the forest as Ayodhya — go, dear one, at peace.”
+        </p>
+        <div className="hr-ornate my-8"><span>✦ ❀ ✦</span></div>
+        <h3 className="font-display text-3xl md:text-5xl text-gradient-gold leading-tight">
+          A timeless epic of<br />Dharma, Devotion, and Duty
+        </h3>
+        <p className="mt-6 font-sanskrit text-2xl text-saffron tracking-widest">जय श्री राम</p>
+        <p className="mt-10 text-xs text-[#a99875] tracking-widest uppercase">© Ramayana Codex · Built with reverence</p>
+      </footer>
+
+      {selectedChar && <CharacterModal character={selectedChar} onClose={() => setSelectedChar(null)} />}
+      {selectedKanda && <KandaDetailModal kanda={selectedKanda} onClose={() => setSelectedKanda(null)} />}
     </div>
   );
 };
