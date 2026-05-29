@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import CharacterCard from './components/CharacterCard';
@@ -9,25 +9,13 @@ import ThemeCard from './components/ThemeCard';
 import StoryCard from './components/StoryCard';
 import FamilyTree from './components/FamilyTree';
 import InteractiveMap from './components/InteractiveMap';
-import AskValmikiChatBox from './components/AskValmikiChatBox';
 import { characters, kandas, themesData, stats, stories } from './constants';
 import { Character, Kanda } from './types';
 
-const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, delay = 0, className }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); obs.unobserve(el); } }, { threshold: 0.12 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return (
-    <div ref={ref} className={`reveal ${shown ? 'in' : ''} ${className ?? ''}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
-    </div>
-  );
-};
+// Static wrapper (no scroll animations) — preserves API used throughout the page
+const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, className }) => (
+  <div className={className}>{children}</div>
+);
 
 const SectionTitle: React.FC<{ eyebrow: string; title: React.ReactNode; subtitle?: React.ReactNode }> = ({ eyebrow, title, subtitle }) => (
   <div className="text-center mb-12">
@@ -127,13 +115,13 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* MAP */}
+      {/* SACRED PATH */}
       <section id="map" className="max-w-6xl mx-auto px-6 py-20 md:py-28">
         <Reveal>
           <SectionTitle
             eyebrow="Sacred Geography · पुण्य-भूमि"
-            title={<>The <span className="text-gradient-saffron">Map of the Epic</span></>}
-            subtitle="Hover the wax-sealed markers to walk from Ayodhya to Lanka."
+            title={<>The <span className="text-gradient-saffron">Sacred Path</span></>}
+            subtitle="From Ayodhya to Lanka and home again — the halts, ashrams, and turning points of the fourteen-year journey."
           />
         </Reveal>
         <Reveal delay={100}><InteractiveMap /></Reveal>
@@ -149,18 +137,6 @@ const App: React.FC = () => {
           />
         </Reveal>
         <Reveal delay={100}><FamilyTree /></Reveal>
-      </section>
-
-      {/* ASK */}
-      <section id="ask" className="max-w-4xl mx-auto px-6 py-20 md:py-28">
-        <Reveal>
-          <SectionTitle
-            eyebrow="Inquire of the Sage · वाल्मीकि से पूछिए"
-            title={<>Ask <span className="text-gradient-saffron">Valmiki</span></>}
-            subtitle="Ask anything about the characters, places, or teachings of the epic."
-          />
-        </Reveal>
-        <Reveal delay={100}><AskValmikiChatBox /></Reveal>
       </section>
 
       {/* FOOTER */}

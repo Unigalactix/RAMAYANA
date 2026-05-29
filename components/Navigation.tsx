@@ -5,9 +5,8 @@ const links = [
   { href: '#kandas', label: 'Kandas' },
   { href: '#themes', label: 'Themes' },
   { href: '#stories', label: 'Stories' },
-  { href: '#map', label: 'Map' },
+  { href: '#map', label: 'Path' },
   { href: '#lineage', label: 'Lineage' },
-  { href: '#ask', label: 'Ask' },
 ];
 
 const Navigation: React.FC = () => (
