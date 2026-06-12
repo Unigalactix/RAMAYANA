@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import CharacterCard from './components/CharacterCard';
@@ -17,6 +17,12 @@ import ClosingShloka from './components/ClosingShloka';
 import { characters, kandas, themesData, stats, stories } from './constants';
 import { Character, Kanda } from './types';
 
+// Lazy-load the WebGL flight page so the Codex bundle stays untouched.
+const HanumanFlight = lazy(() => import('./components/HanumanFlight'));
+
+const FLIGHT_HASH = '#leap';
+const isFlightHash = (h: string) => h === FLIGHT_HASH || h.startsWith(FLIGHT_HASH + '/');
+
 // Static wrapper (no scroll animations) — preserves API used throughout the page
 const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, className }) => (
   <div className={className}>{children}</div>
@@ -34,6 +40,57 @@ const SectionTitle: React.FC<{ eyebrow: string; title: React.ReactNode; subtitle
 const App: React.FC = () => {
   const [selectedChar, setSelectedChar] = useState<Character | null>(null);
   const [selectedKanda, setSelectedKanda] = useState<Kanda | null>(null);
+
+  // Lightweight hash-based page switch — preserves all existing anchor nav.
+  const [showFlight, setShowFlight] = useState<boolean>(() =>
+    typeof window !== 'undefined' && isFlightHash(window.location.hash)
+  );
+
+  useEffect(() => {
+    const onHash = () => setShowFlight(isFlightHash(window.location.hash));
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  // When entering / leaving the flight page, manage body scroll lock + scrollY.
+  useEffect(() => {
+    if (showFlight) {
+      // Remember and reset scroll so the flight starts at top.
+      document.body.dataset.prevScroll = String(window.scrollY);
+      window.scrollTo(0, 0);
+      document.body.classList.add('flight-mode');
+    } else {
+      document.body.classList.remove('flight-mode');
+      const prev = parseInt(document.body.dataset.prevScroll || '0', 10);
+      window.scrollTo(0, isFinite(prev) ? prev : 0);
+    }
+  }, [showFlight]);
+
+  const exitFlight = () => {
+    // Clear the hash without leaving an entry in history.
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    setShowFlight(false);
+  };
+
+  if (showFlight) {
+    return (
+      <Suspense
+        fallback={
+          <div className="hf-root" style={{ background: '#05030a' }}>
+            <div className="hf-intro" style={{ opacity: 1 }}>
+              <div className="hf-intro-shloka font-sanskrit">मनोजवं मारुततुल्यवेगम्</div>
+              <h2 className="hf-intro-title font-display">
+                Summoning <span className="text-gradient-gold">the leap…</span>
+              </h2>
+              <p className="hf-intro-body font-serif">Preparing the ocean and the sky.</p>
+            </div>
+          </div>
+        }
+      >
+        <HanumanFlight onExit={exitFlight} />
+      </Suspense>
+    );
+  }
 
   return (
     <div id="top" className="relative">

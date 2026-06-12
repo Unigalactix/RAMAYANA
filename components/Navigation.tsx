@@ -54,6 +54,16 @@ const Navigation: React.FC = () => {
           </a>
         ))}
         <span className="topnav-sep" aria-hidden="true" />
+        <a
+          href="#leap"
+          className={`topnav-btn topnav-leap ${active === '#leap' ? 'active' : ''}`}
+          aria-label="Hanuman's Leap — an interactive flight to Lanka"
+          title="Fly with Hanuman across the ocean"
+        >
+          <span aria-hidden="true">✦</span>
+          <span className="hidden sm:inline">Hanuman’s Leap</span>
+        </a>
+        <span className="topnav-sep" aria-hidden="true" />
         <button
           type="button"
           onClick={openPalette}

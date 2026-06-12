@@ -687,6 +687,230 @@
         text-align: center;
         background: rgba(0,0,0,.25);
       }
+
+      /* =================== HANUMAN'S LEAP — interactive flight page =================== */
+      /* When the flight page is mounted, hide the background stars / grain so the
+         WebGL canvas is the only backdrop. The Codex view is untouched. */
+      body.flight-mode .stars { display: none; }
+      body.flight-mode::before { display: none; }
+      body.flight-mode {
+        background: #05030a;
+      }
+
+      .hf-root {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        color: #ece2c8;
+      }
+      .hf-canvas-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+      /* Drives the scroll progress for the flight (tall, invisible spacer). */
+      .hf-scroller {
+        position: relative;
+        width: 100%;
+        height: 600vh; /* six full viewports of scroll = the leap */
+        pointer-events: none;
+      }
+      .hf-vignette {
+        position: fixed; inset: 0; z-index: 1;
+        pointer-events: none;
+        background:
+          radial-gradient(120% 80% at 50% 50%, transparent 55%, rgba(0,0,0,0.65) 100%),
+          linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 18%, transparent 80%, rgba(0,0,0,0.55) 100%);
+      }
+
+      /* Sticky header: title + return + progress bar */
+      .hf-header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 20;
+        padding: 18px 24px 14px;
+        display: flex; align-items: center; gap: 16px;
+        background: linear-gradient(180deg, rgba(5,3,10,0.85) 0%, rgba(5,3,10,0.0) 100%);
+        backdrop-filter: blur(6px);
+      }
+      .hf-exit {
+        font-family: 'Cinzel', serif;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        font-size: 11px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(245,208,97,.4);
+        background: rgba(13,10,24,.55);
+        color: #f5d061;
+        cursor: pointer;
+        transition: background .2s, border-color .2s, transform .2s;
+      }
+      .hf-exit:hover {
+        background: rgba(245,208,97,.10);
+        border-color: rgba(245,208,97,.8);
+        transform: translateY(-1px);
+      }
+      .hf-title-block { flex: 1; text-align: center; }
+      .hf-eyebrow {
+        font-family: 'Cinzel', serif;
+        font-size: 10px;
+        letter-spacing: .42em;
+        text-transform: uppercase;
+        color: rgba(245,208,97,.85);
+      }
+      .hf-title {
+        margin-top: 2px;
+        font-family: 'Cinzel Decorative', serif;
+        font-size: clamp(18px, 2.4vw, 26px);
+        background: linear-gradient(135deg, #f8e29a 0%, #d4af37 40%, #b8860b 60%, #f5d061 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        text-shadow: 0 0 30px rgba(212,175,55,0.2);
+      }
+      .hf-progress {
+        width: clamp(120px, 18vw, 220px);
+        height: 3px;
+        border-radius: 3px;
+        background: rgba(245,208,97,.14);
+        overflow: hidden;
+      }
+      .hf-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff8c42, #f5d061, #d4af37);
+        box-shadow: 0 0 12px rgba(245,208,97,.7);
+        transition: width .2s ease-out;
+      }
+
+      /* Intro / hero on the flight page */
+      .hf-intro {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        text-align: center;
+        padding: 80px 24px;
+        pointer-events: none;
+        transition: opacity .35s ease;
+      }
+      .hf-intro-shloka {
+        font-size: clamp(14px, 1.4vw, 18px);
+        color: #f5d061;
+        opacity: .9;
+        line-height: 1.7;
+        letter-spacing: .04em;
+      }
+      .hf-intro-title {
+        margin-top: 22px;
+        font-size: clamp(40px, 7vw, 96px);
+        line-height: 1.02;
+        text-shadow: 0 4px 30px rgba(0,0,0,.7), 0 0 60px rgba(245,208,97,.15);
+      }
+      .hf-intro-body {
+        margin-top: 22px;
+        max-width: 640px;
+        font-size: clamp(16px, 1.4vw, 19px);
+        color: #ece2c8;
+        line-height: 1.55;
+      }
+      .hf-scroll-hint {
+        margin-top: 36px;
+        display: inline-flex; flex-direction: column; align-items: center; gap: 6px;
+        font-family: 'Cinzel', serif;
+        font-size: 10px; letter-spacing: .42em; text-transform: uppercase;
+        color: rgba(245,208,97,.85);
+      }
+      .hf-arrow {
+        font-size: 20px;
+        animation: hfBounce 1.6s ease-in-out infinite;
+      }
+      @keyframes hfBounce {
+        0%, 100% { transform: translateY(0); opacity: .6; }
+        50% { transform: translateY(8px); opacity: 1; }
+      }
+
+      /* Narrative milestone panels — pinned bottom-left */
+      .hf-milestones {
+        position: fixed;
+        left: max(24px, 4vw);
+        bottom: max(40px, 6vh);
+        z-index: 12;
+        width: min(440px, calc(100vw - 48px));
+        pointer-events: none;
+      }
+      .hf-milestone {
+        background: linear-gradient(180deg, rgba(20,8,30,0.72) 0%, rgba(10,4,18,0.78) 100%);
+        border: 1px solid rgba(245,208,97,.28);
+        border-radius: 18px;
+        padding: 20px 22px 22px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 30px 60px -25px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.10);
+        transition: opacity .4s ease, transform .4s ease;
+      }
+      .hf-milestone-eyebrow {
+        font-size: 11px;
+        letter-spacing: .32em;
+        text-transform: uppercase;
+        color: #f5d061;
+      }
+      .hf-milestone-sanskrit {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #ffd089;
+        line-height: 1.5;
+      }
+      .hf-milestone-english {
+        margin-top: 4px;
+        font-size: 14px;
+        color: #e6d9b2;
+      }
+      .hf-milestone-body {
+        margin-top: 12px;
+        font-size: 15px;
+        line-height: 1.55;
+        color: #ece2c8;
+      }
+
+      /* Arrival CTA panel */
+      .hf-arrival {
+        position: fixed;
+        inset: 0;
+        z-index: 14;
+        display: flex; align-items: center; justify-content: center;
+        background: radial-gradient(800px 600px at 50% 50%, rgba(212,175,55,0.18), transparent 70%), rgba(5,3,10,0.6);
+        transition: opacity .6s ease;
+        text-align: center;
+        padding: 24px;
+      }
+      .hf-arrival-inner {
+        max-width: 720px;
+      }
+
+      /* Nav link to the flight from the codex */
+      .topnav-leap {
+        color: #ffd089 !important;
+        border: 1px solid rgba(245,208,97,.45);
+        background: linear-gradient(135deg, rgba(255,140,66,0.12), rgba(245,208,97,0.08));
+      }
+      .topnav-leap:hover {
+        background: linear-gradient(135deg, rgba(255,140,66,0.22), rgba(245,208,97,0.16));
+        box-shadow: 0 0 18px rgba(245,208,97,.25);
+      }
+
+      /* Respect reduced motion: still beautiful, but minimal animation */
+      @media (prefers-reduced-motion: reduce) {
+        .hf-arrow { animation: none; }
+        .hf-milestone { transition: opacity .2s ease; }
+      }
+
+      @media (max-width: 640px) {
+        .hf-milestones { left: 12px; right: 12px; width: auto; bottom: 24px; }
+        .hf-milestone { padding: 14px 16px 16px; }
+        .hf-milestone-sanskrit { font-size: 16px; }
+        .hf-milestone-body { font-size: 13px; }
+        .hf-header { padding: 12px 14px; }
+        .hf-title-block { text-align: left; }
+      }
     </style>
   </head>
   <body>
