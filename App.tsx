@@ -180,10 +180,10 @@ const App: React.FC = () => {
           <span className="chip !cursor-default" aria-live="polite">{shownCharacters.length} shown</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
-          {shownCharacters.map((c, i) => (
-            <Reveal key={c.id} delay={(i % 4) * 80}>
+          {shownCharacters.map((c) => (
+            <div key={c.id}>
               <CharacterCard character={c} onOpen={setSelectedChar} />
-            </Reveal>
+            </div>
           ))}
         </div>
       </section>
@@ -236,8 +236,8 @@ const App: React.FC = () => {
           />
         </Reveal>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {themesData.map((t, i) => (
-            <Reveal key={t.title} delay={i * 80}><ThemeCard theme={t} /></Reveal>
+          {themesData.map((t) => (
+            <div key={t.title}><ThemeCard theme={t} /></div>
           ))}
         </div>
       </section>
@@ -257,8 +257,8 @@ const App: React.FC = () => {
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {shownStories.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) * 80}><StoryCard story={s} onOpen={setSelectedStory} /></Reveal>
+          {shownStories.map((s) => (
+            <div key={s.title}><StoryCard story={s} onOpen={setSelectedStory} /></div>
           ))}
         </div>
         {shownStories.length === 0 && <p className="text-center font-serif italic text-[#d8cdb0]">No tales in this Kanda yet — the full telling lives in its scenes above.</p>}

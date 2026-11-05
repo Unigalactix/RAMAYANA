@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Character } from '../types';
+import Sigil, { CHARACTER_SIGIL } from './Sigil';
 
 interface Props {
   character: Character;
