@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Sigil from './Sigil';
 
 type Temple = {
   name: string;
@@ -152,7 +153,7 @@ const TempleCard: React.FC<{ t: Temple; i: number }> = ({ t, i }) => (
           boxShadow: `0 0 18px ${t.accent}40`,
         }}
         aria-hidden="true"
-      >{t.glyph}</div>
+      ><Sigil kind="temple" color={t.accent} size={30} /></div>
       <div className="min-w-0 flex-1">
         <h3 className="font-display text-xl text-goldlight leading-tight">{t.name}</h3>
         {t.sanskrit && <div className="font-sanskrit text-base" style={{ color: t.accent }}>{t.sanskrit}</div>}
@@ -172,16 +173,29 @@ const TempleCard: React.FC<{ t: Temple; i: number }> = ({ t, i }) => (
   </article>
 );
 
-const Temples: React.FC = () => (
+const NORTH = ['Uttar Pradesh', 'Jammu & Kashmir', 'Madhya Pradesh / Uttar Pradesh'];
+const regionOf = (t: Temple) => NORTH.includes(t.state) ? 'North' : 'South';
+const REGIONS = ['All', 'North', 'South'] as const;
+
+const Temples: React.FC = () => {
+  const [region, setRegion] = useState<(typeof REGIONS)[number]>('All');
+  const shown = temples.map((t, i) => ({ t, i })).filter(({ t }) => region === 'All' || regionOf(t) === region);
+  return (
   <div>
-    <div className="text-center mb-10">
+    <div className="text-center mb-8">
       <p className="font-sanskrit text-2xl md:text-3xl text-saffron tracking-wider">श्री राम जय राम जय जय राम</p>
-      <p className="mt-2 font-serif italic text-[#c9bd9b]">“Wherever His name is sung, there His feet rest.”</p>
+      <p className="mt-2 font-serif italic text-[#d8cdb0]">“Wherever His name is sung, there His feet rest.”</p>
+    </div>
+    <div className="flex flex-wrap justify-center gap-2 mb-10" role="group" aria-label="Filter temples by region">
+      {REGIONS.map(r => (
+        <button key={r} onClick={() => setRegion(r)} className={`chip ${region === r ? 'active' : ''}`} aria-pressed={region === r}>{r === 'All' ? 'All Kshetras' : `${r} India`}</button>
+      ))}
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {temples.map((t, i) => <TempleCard key={t.name} t={t} i={i} />)}
+      {shown.map(({ t, i }) => <TempleCard key={t.name} t={t} i={i} />)}
     </div>
   </div>
-);
+  );
+};
 
 export default Temples;

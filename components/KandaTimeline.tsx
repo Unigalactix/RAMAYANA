@@ -17,14 +17,14 @@ const KandaTimeline: React.FC<Props> = ({ kandas, onOpen }) => {
       {/* Rail */}
       <div className="relative">
         <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" aria-hidden="true" />
-        <div className="relative grid grid-cols-7 gap-2 md:gap-4">
+        <div className="relative flex md:grid md:grid-cols-7 gap-3 md:gap-4 overflow-x-auto md:overflow-visible no-scrollbar snap-x pb-2 md:pb-0">
           {kandas.map((kk, i) => {
             const isActive = i === active;
             return (
               <button
                 key={kk.title}
                 onClick={() => setActive(i)}
-                className="group flex flex-col items-center text-center"
+                className="group flex flex-col items-center text-center shrink-0 snap-center min-w-[64px] md:min-w-0"
                 aria-label={`Select ${kk.title}`}
               >
                 <span
@@ -36,7 +36,7 @@ const KandaTimeline: React.FC<Props> = ({ kandas, onOpen }) => {
                     boxShadow: isActive ? `0 0 22px ${kk.accent}88` : 'none',
                   }}
                 >{ROMAN[i]}</span>
-                <span className={`mt-2 text-[10px] md:text-xs uppercase tracking-widest transition ${isActive ? 'text-goldlight' : 'text-[#a99875] group-hover:text-goldlight'}`}>{kk.title.split(' ')[0]}</span>
+                <span className={`mt-2 text-[11px] md:text-xs uppercase tracking-widest transition ${isActive ? 'text-goldlight' : 'text-[#c9bd9b] group-hover:text-goldlight'}`}>{kk.title.split(' ')[0]}</span>
               </button>
             );
           })}

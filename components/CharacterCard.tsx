@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Character } from '../types';
+import Sigil, { CHARACTER_SIGIL } from './Sigil';
 
 const RARITY_LABEL: Record<Character['rarity'], string> = {
   mythic: 'Mythic Avatar',
@@ -39,11 +40,19 @@ const CharacterCard: React.FC<Props> = ({ character, onOpen }) => {
                 background: `radial-gradient(ellipse at 50% 35%, ${character.accent}55 0%, transparent 65%), linear-gradient(180deg, #1f1632 0%, #0d0a18 100%)`,
               }}
             >
-              <div className="tc-glyph" aria-hidden="true">{character.glyph}</div>
+              <Sigil kind={CHARACTER_SIGIL[character.id] || 'star'} color={character.accent} size={92} />
             </div>
             <div className="tc-name">{character.name}</div>
             <div className="tc-epithet">{character.epithet}</div>
 
+            <button
+              onClick={(e) => { e.stopPropagation(); onOpen?.(character); }}
+              className="btn-gold tc-front-codex"
+              aria-label={`Open detailed codex for ${character.name} without flipping the card`}
+              style={{ position: 'relative', zIndex: 5, margin: '10px auto 0', display: 'block', fontSize: 11, padding: '7px 14px' }}
+            >
+              Read the Codex
+            </button>
             <div className="tc-stats">
               {character.stats.map(s => (
                 <div className="tc-stat" key={s.label}>

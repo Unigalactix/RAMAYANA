@@ -32,9 +32,9 @@ const CharacterModal: React.FC<Props> = ({ character, onClose }) => {
         >
           <div className="flex items-center gap-5">
             <div
-              className="w-20 h-20 rounded-2xl flex items-center justify-center text-5xl shrink-0"
+              className="w-20 h-20 rounded-2xl flex items-center justify-center shrink-0"
               style={{ background: `linear-gradient(135deg, ${character.accent}44, transparent)`, border: `1px solid ${character.accent}66`, boxShadow: `0 0 30px ${character.accent}55` }}
-            >{character.glyph}</div>
+            ><Sigil kind={CHARACTER_SIGIL[character.id] || 'star'} color={character.accent} size={46} /></div>
             <div>
               <div className="font-sanskrit text-xl" style={{ color: character.accent }}>{character.sanskrit}</div>
               <h2 className="font-display text-3xl md:text-4xl text-gradient-gold leading-tight">{character.name}</h2>

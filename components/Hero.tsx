@@ -4,6 +4,7 @@ const Hero: React.FC = () => {
   return (
     <header className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
       <div className="hero-orbit" aria-hidden="true" />
+      <div className="divine-rays" aria-hidden="true" />
       <svg className="chakra" viewBox="0 0 200 200" aria-hidden="true">
         <defs>
           <radialGradient id="cg" cx="50%" cy="50%" r="50%">
@@ -47,6 +48,7 @@ const Hero: React.FC = () => {
         <div className="flex flex-wrap items-center justify-center gap-3">
           <a href="#characters" className="btn-gold">Open the Pantheon</a>
           <a href="#kandas" className="btn-ghost">Walk the Seven Kandas</a>
+          <a href="#leelas" className="btn-ghost">Play the Divine Leelas</a>
         </div>
 
         <p className="mt-12 font-serif italic text-[#c9bd9b] max-w-xl mx-auto">
@@ -54,8 +56,12 @@ const Hero: React.FC = () => {
         </p>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-goldlight/60 text-xs tracking-[0.3em] uppercase animate-pulse" aria-hidden="true">
-        Scroll
+      <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 w-full pointer-events-none" aria-hidden="true" preserveAspectRatio="none" style={{ height: 90, opacity: .8 }}>
+        <path d="M0 120 V84 L120 84 L120 62 L240 62 L240 84 L360 84 L360 44 L470 44 L470 84 L590 84 L590 58 L720 20 L850 58 L850 84 L970 84 L970 44 L1080 44 L1080 84 L1200 84 L1200 62 L1320 62 L1320 84 L1440 84 V120 Z" fill="#07050c" stroke="rgba(245,208,97,.35)" strokeWidth="1.5" />
+        {[420,720,1020].map(x => (<circle key={x} cx={x} cy={88} r="4" fill="#F5D061" opacity="0.9" />))}
+      </svg>
+      <div className="absolute bottom-7 left-1/2 -translate-x-1/2 text-goldlight text-xs tracking-[0.3em] uppercase animate-pulse z-10" aria-hidden="true">
+        <span className="diya" />&nbsp; Scroll &nbsp;<span className="diya" />
       </div>
     </header>
   );

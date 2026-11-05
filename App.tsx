@@ -14,8 +14,12 @@ import CommandPalette from './components/CommandPalette';
 import GlossaryDrawer from './components/GlossaryDrawer';
 import VerseOfTheDay from './components/VerseOfTheDay';
 import ClosingShloka from './components/ClosingShloka';
+import SceneGallery from './components/SceneGallery';
+import InteractiveScenes from './components/InteractiveScenes';
+import StoryModal from './components/StoryModal';
+import { storyDetails } from './storiesContent';
 import { characters, kandas, themesData, stats, stories } from './constants';
-import { Character, Kanda } from './types';
+import { Character, Kanda, Story } from './types';
 
 // Lazy-load the WebGL flight page so the Codex bundle stays untouched.
 const HanumanFlight = lazy(() => import('./components/HanumanFlight'));
@@ -23,10 +27,27 @@ const HanumanFlight = lazy(() => import('./components/HanumanFlight'));
 const FLIGHT_HASH = '#leap';
 const isFlightHash = (h: string) => h === FLIGHT_HASH || h.startsWith(FLIGHT_HASH + '/');
 
-// Static wrapper (no scroll animations) — preserves API used throughout the page
-const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, className }) => (
-  <div className={className}>{children}</div>
-);
+// Scroll reveal — fades/rises each block in once as it enters the viewport.
+// Honours prefers-reduced-motion: content is simply visible, no animation.
+const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, delay = 0, className }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setShown(true); return; }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some(e => e.isIntersecting)) { setShown(true); io.disconnect(); }
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={`${shown ? 'reveal-in' : 'reveal-init'} ${className || ''}`} style={{ transitionDelay: shown ? `${delay}ms` : '0ms' }}>
+      {children}
+    </div>
+  );
+};
 
 const SectionTitle: React.FC<{ eyebrow: string; title: React.ReactNode; subtitle?: React.ReactNode }> = ({ eyebrow, title, subtitle }) => (
   <div className="text-center mb-12">
@@ -40,6 +61,16 @@ const SectionTitle: React.FC<{ eyebrow: string; title: React.ReactNode; subtitle
 const App: React.FC = () => {
   const [selectedChar, setSelectedChar] = useState<Character | null>(null);
   const [selectedKanda, setSelectedKanda] = useState<Kanda | null>(null);
+  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [charFilter, setCharFilter] = useState<string>('All');
+  const [storyFilter, setStoryFilter] = useState<string>('All');
+  const [leelaFocus, setLeelaFocus] = useState<string>('');
+  const playLeela = (id: string) => {
+    setLeelaFocus(id);
+    requestAnimationFrame(() => document.querySelector('#leelas')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+  const shownCharacters = charFilter === 'All' ? characters : characters.filter(c => c.rarity === charFilter);
+  const shownStories = storyFilter === 'All' ? stories : stories.filter(st => storyDetails[st.title]?.kanda === storyFilter);
 
   // Lightweight hash-based page switch — preserves all existing anchor nav.
   const [showFlight, setShowFlight] = useState<boolean>(() =>
@@ -116,7 +147,7 @@ const App: React.FC = () => {
       </section>
 
       {/* STATS */}
-      <section className="max-w-6xl mx-auto px-6 -mt-12 md:-mt-20 relative z-10">
+      <section className="max-w-6xl mx-auto px-6 mt-10 md:mt-14 relative z-10">
         <Reveal>
           <div className="glass grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden">
             {stats.map((s, i) => (
@@ -142,8 +173,14 @@ const App: React.FC = () => {
           />
         </Reveal>
 
+        <div className="flex flex-wrap justify-center gap-2 mb-10" role="group" aria-label="Filter characters by rarity">
+          {[['All', 'All Characters'], ['mythic', 'Mythic'], ['legendary', 'Legendary'], ['epic', 'Epic'], ['rare', 'Rare']].map(([v, l]) => (
+            <button key={v} onClick={() => setCharFilter(v)} className={`chip ${charFilter === v ? 'active' : ''}`} aria-pressed={charFilter === v}>{l}</button>
+          ))}
+          <span className="chip !cursor-default" aria-live="polite">{shownCharacters.length} shown</span>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
-          {characters.map((c, i) => (
+          {shownCharacters.map((c, i) => (
             <Reveal key={c.id} delay={(i % 4) * 80}>
               <CharacterCard character={c} onOpen={setSelectedChar} />
             </Reveal>
@@ -163,6 +200,30 @@ const App: React.FC = () => {
         <Reveal delay={100}>
           <KandaTimeline kandas={kandas} onOpen={setSelectedKanda} />
         </Reveal>
+      </section>
+
+      {/* KEY SCENES — scenic highlights of every Kanda */}
+      <section id="scenes" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Key Scenes · प्रमुख-दृश्य"
+            title={<>Scenes that <span className="text-gradient-saffron">Light the Epic</span></>}
+            subtitle="Four defining moments from each of the seven Kandas — painted as scenic tableaux. Open any scene to sit with it a while; the playable ones take you into the Leelas."
+          />
+        </Reveal>
+        <Reveal delay={80}><SceneGallery onPlayLeela={playLeela} /></Reveal>
+      </section>
+
+      {/* INTERACTIVE LEELAS */}
+      <section id="leelas" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Interactive Leelas · दिव्य-लीला"
+            title={<>Step Into the <span className="text-gradient-saffron">Story</span></>}
+            subtitle="Draw Shiva’s bow until it breaks. Face Parashurama. Hold Kaikeyi’s chariot, clear Panchavati, burn Lanka, and find the Sanjeevani before dawn."
+          />
+        </Reveal>
+        <Reveal delay={80}><InteractiveScenes focusId={leelaFocus} /></Reveal>
       </section>
 
       {/* THEMES */}
@@ -190,11 +251,17 @@ const App: React.FC = () => {
             subtitle="Eighteen tales — each a single gem in the necklace of the Ramayana. Tap any to read its full retelling."
           />
         </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {stories.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) * 80}><StoryCard story={s} /></Reveal>
+        <div className="flex flex-wrap justify-center gap-2 mb-10" role="group" aria-label="Filter tales by Kanda">
+          {['All', ...kandas.map(k => k.title)].map(k => (
+            <button key={k} onClick={() => setStoryFilter(k)} className={`chip ${storyFilter === k ? 'active' : ''}`} aria-pressed={storyFilter === k}>{k === 'All' ? 'All Tales' : k.replace(' Kanda', '')}</button>
           ))}
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {shownStories.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 3) * 80}><StoryCard story={s} onOpen={setSelectedStory} /></Reveal>
+          ))}
+        </div>
+        {shownStories.length === 0 && <p className="text-center font-serif italic text-[#d8cdb0]">No tales in this Kanda yet — the full telling lives in its scenes above.</p>}
       </section>
 
       {/* SACRED PATH */}
@@ -258,6 +325,7 @@ const App: React.FC = () => {
 
       {selectedChar && <CharacterModal character={selectedChar} onClose={() => setSelectedChar(null)} />}
       {selectedKanda && <KandaDetailModal kanda={selectedKanda} onClose={() => setSelectedKanda(null)} />}
+      {selectedStory && <StoryModal story={selectedStory} onClose={() => setSelectedStory(null)} />}
 
       {/* Global overlays */}
       <CommandPalette />
