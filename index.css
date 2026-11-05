@@ -940,3 +940,11 @@ footer p, .tc-fact-row span { color: #e8ddba; }
 /* Back-face Codex button must sit above every card overlay layer */
 .tc-back .tc-holo { pointer-events: none !important; }
 .tc-back-codex { isolation: isolate; }
+
+/* Flip-card hit-testing: only the visible face may receive clicks.
+   Without this, Chrome can hit-test the backface-hidden front face
+   above the back face's button, so the click flips instead of opening. */
+.tc .tc-face.tc-back { pointer-events: none; }
+.tc.is-flipped .tc-face { pointer-events: none; }
+.tc.is-flipped .tc-face.tc-back { pointer-events: auto; }
+.tc-back-inner { padding-bottom: 64px; }

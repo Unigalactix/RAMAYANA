@@ -86,18 +86,16 @@ const CharacterCard: React.FC<Props> = ({ character, onOpen }) => {
               <div className="tc-fact-row"><strong>Era</strong><span>{character.era}</span></div>
               <div className="tc-fact-row"><strong>Weapon</strong><span className="text-right">{character.weapon}</span></div>
             </div>
-            <button
-              onClick={(e) => { e.stopPropagation(); onOpen?.(character); }}
-              onMouseDown={(e) => e.stopPropagation()}
-              onPointerDown={(e) => e.stopPropagation()}
-              className="btn-gold mt-auto self-center tc-back-codex"
-              style={{ position: 'relative', zIndex: 10, pointerEvents: 'auto', flexShrink: 0 }}
-              aria-label={`Open detailed codex for ${character.name}`}
-            >
-              Read the Codex
-            </button>
           </div>
           <div className="tc-holo" style={{ opacity: 0.35 }} />
+          <button
+            onClick={(e) => { e.stopPropagation(); onOpen?.(character); }}
+            className="btn-gold tc-back-codex"
+            style={{ position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)', zIndex: 8, pointerEvents: 'auto', whiteSpace: 'nowrap' }}
+            aria-label={`Open detailed codex for ${character.name}`}
+          >
+            Read the Codex
+          </button>
         </div>
       </div>
     </div>
