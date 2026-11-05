@@ -885,8 +885,8 @@ body { font-size: 17px; }
 footer p, .tc-fact-row span { color: #e8ddba; }
 
 /* Working scroll reveal — set by App.tsx Reveal (IntersectionObserver) */
-.reveal-init { opacity: 0; transform: translateY(14px); }
-.reveal-in { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s cubic-bezier(.165,.84,.44,1); }
+.reveal-init { opacity: 0; transform: translateY(8px); }
+.reveal-in { opacity: 1; transform: none; transition: opacity .45s ease, transform .45s cubic-bezier(.165,.84,.44,1); }
 @media (prefers-reduced-motion: reduce) {
   .reveal-init { opacity: 1; transform: none; }
   .reveal-in { transition: none; }

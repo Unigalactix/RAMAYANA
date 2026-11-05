@@ -56,8 +56,8 @@ const Hero: React.FC = () => {
         </p>
       </div>
 
-      <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 w-full pointer-events-none" aria-hidden="true" preserveAspectRatio="none" style={{ height: 90, opacity: .8 }}>
-        <path d="M0 120 V84 L120 84 L120 62 L240 62 L240 84 L360 84 L360 44 L470 44 L470 84 L590 84 L590 58 L720 20 L850 58 L850 84 L970 84 L970 44 L1080 44 L1080 84 L1200 84 L1200 62 L1320 62 L1320 84 L1440 84 V120 Z" fill="#07050c" stroke="rgba(245,208,97,.35)" strokeWidth="1.5" />
+      <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 w-full pointer-events-none" aria-hidden="true" preserveAspectRatio="none" style={{ height: 90, opacity: .95 }}>
+        <path d="M0 120 V84 L120 84 L120 62 L240 62 L240 84 L360 84 L360 44 L470 44 L470 84 L590 84 L590 58 L720 20 L850 58 L850 84 L970 84 L970 44 L1080 44 L1080 84 L1200 84 L1200 62 L1320 62 L1320 84 L1440 84 V120 Z" fill="#150b26" stroke="rgba(245,208,97,.8)" strokeWidth="2" />
         {[420,720,1020].map(x => (<circle key={x} cx={x} cy={88} r="4" fill="#F5D061" opacity="0.9" />))}
       </svg>
       <div className="absolute bottom-7 left-1/2 -translate-x-1/2 text-goldlight text-xs tracking-[0.3em] uppercase animate-pulse z-10" aria-hidden="true">

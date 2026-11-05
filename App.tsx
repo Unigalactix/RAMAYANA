@@ -38,7 +38,7 @@ const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setShown(true); return; }
     const io = new IntersectionObserver((entries) => {
       if (entries.some(e => e.isIntersecting)) { setShown(true); io.disconnect(); }
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.04, rootMargin: '0px 0px 18% 0px' });
     io.observe(el);
     return () => io.disconnect();
   }, []);

@@ -34,21 +34,21 @@ const journey: Stop[] = [
   { name: 'Panchavati', sanskrit: 'पञ्चवटी', kind: 'stay', glyph: '🛖', accent: '#10B981',
     description: 'Hut by the Godavari at Nashik. Surpanakha is disfigured here; Maricha appears as the golden deer; Sita is taken.', x: 38, y: 62 },
   { name: 'Jatayu’s Fall', kind: 'event', glyph: '🦅', accent: '#B91C1C',
-    description: 'The vulture-king fights Ravana to save Sita and dies in Rama’s arms — the only witness to the abduction.', x: 42, y: 68 },
+    description: 'The vulture-king fights Ravana to save Sita and dies in Rama’s arms — the only witness to the abduction.', x: 38, y: 66 },
   { name: 'Shabari’s Ashram', kind: 'temple', glyph: '🕉️', accent: '#FF8C42',
-    description: 'The elderly devotee offers Rama berries she has already tasted to ensure none are bitter. Pure bhakti rewarded with moksha.', x: 46, y: 72 },
+    description: 'The elderly devotee offers Rama berries she has already tasted to ensure none are bitter. Pure bhakti rewarded with moksha.', x: 53, y: 71 },
   { name: 'Rishyamukha', kind: 'stay', glyph: '🐒', accent: '#E879F9',
-    description: 'Mountain refuge of the exiled Sugriva. Hanuman meets Rama here; the fire-witnessed pact of friendship is sealed.', x: 47, y: 78 },
+    description: 'Mountain refuge of the exiled Sugriva. Hanuman meets Rama here; the fire-witnessed pact of friendship is sealed.', x: 42, y: 76 },
   { name: 'Kishkindha', sanskrit: 'किष्किन्धा', kind: 'stay', glyph: '👑', accent: '#E879F9',
-    description: 'Vanara capital. Rama slays Vali; Sugriva is crowned king and musters the search for Sita.', x: 48, y: 80 },
+    description: 'Vanara capital. Rama slays Vali; Sugriva is crowned king and musters the search for Sita.', x: 52, y: 81 },
   { name: 'Mahendra Mountain', kind: 'event', glyph: '🌬️', accent: '#3B82F6',
-    description: 'From this southern peak Hanuman launches his hundred-yojana leap across the ocean to Lanka.', x: 52, y: 88 },
+    description: 'From this southern peak Hanuman launches his hundred-yojana leap across the ocean to Lanka.', x: 40, y: 87 },
   { name: 'Rameshwaram', sanskrit: 'रामेश्वरम्', kind: 'temple', glyph: '🕉️', accent: '#FF8C42',
-    description: 'Rama consecrates a Shiva lingam here before crossing. One of the twelve Jyotirlingas and a Char Dham of the south.', x: 54, y: 90 },
+    description: 'Rama consecrates a Shiva lingam here before crossing. One of the twelve Jyotirlingas and a Char Dham of the south.', x: 50, y: 90 },
   { name: 'Ram Setu', kind: 'event', glyph: '🌉', accent: '#F5D061',
-    description: 'The vanara army, led by Nala and Nila, builds the floating stone bridge to Lanka in five days.', x: 57, y: 94 },
+    description: 'The vanara army, led by Nala and Nila, builds the floating stone bridge to Lanka in five days.', x: 57, y: 95 },
   { name: 'Lanka', sanskrit: 'लङ्का', kind: 'stay', glyph: '🔥', accent: '#B91C1C',
-    description: 'Ravana’s golden city. The eighteen-day war. Indrajit, Kumbhakarna, and Ravana fall. Sita is reclaimed.', x: 60, y: 97 },
+    description: 'Ravana’s golden city. The eighteen-day war. Indrajit, Kumbhakarna, and Ravana fall. Sita is reclaimed.', x: 65, y: 100 },
   { name: 'Return to Ayodhya', kind: 'event', glyph: '🪔', accent: '#F5D061',
     description: 'The Pushpaka Vimana carries Rama home. Lamps line every street — the first Diwali. Ramarajya begins.', x: 55, y: 18 },
 ];
@@ -70,13 +70,15 @@ const InteractiveMap: React.FC = () => {
             </defs>
             {/* Stylised subcontinent + Lanka */}
             <path d="M28 6 L52 2 L72 10 L78 26 L70 38 L74 52 L64 66 L58 84 L54 96 L50 84 L42 68 L34 56 L24 46 L18 28 Z" fill="url(#land)" stroke="rgba(245,208,97,.45)" strokeWidth="0.8" />
-            <ellipse cx="60" cy="102" rx="6" ry="4.5" fill="#2a1408" stroke="rgba(255,140,66,.6)" strokeWidth="0.7" />
-            <path d="M54 92 C56 95 58 97 60 98" stroke="#7dd3fc" strokeWidth="1.4" fill="none" strokeDasharray="2 2" />
+            <ellipse cx="65" cy="101" rx="6" ry="4.5" fill="#2a1408" stroke="rgba(255,140,66,.6)" strokeWidth="0.7" />
+            <path d="M50 90 C54 94 59 97 65 99" stroke="#7dd3fc" strokeWidth="1.4" fill="none" strokeDasharray="2 2" />
             {/* Rivers */}
             <path d="M52 14 C48 24 52 32 46 42 C41 50 44 58 40 66" stroke="#3B82F6" strokeWidth="0.9" fill="none" opacity="0.6" />
             <path d="M66 16 C60 26 64 36 58 46" stroke="#3B82F6" strokeWidth="0.7" fill="none" opacity="0.45" />
             {/* The Sacred Path route */}
             <polyline className="map-route" points={ROUTE.map(s => `${s.x},${s.y}`).join(' ')} fill="none" stroke="#F5D061" strokeWidth="1.1" strokeLinejoin="round" strokeLinecap="round" opacity="0.85" />
+            <polyline points="65,100 74,80 72,55 66,35 55,18" fill="none" stroke="#E879F9" strokeWidth="0.7" strokeDasharray="2 3" opacity="0.5" />
+            <text x="76" y="58" fontSize="3.4" fill="#E879F9" fontFamily="Cinzel, serif" letterSpacing="0.8">RETURN</text>
             {journey.slice(0, 18).map((s, i) => (
               <g key={s.name} className="map-pin" tabIndex={0} role="button" aria-label={`${i + 1}. ${s.name} — ${KIND_LABEL[s.kind]}`}
                 onClick={() => select(s)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(s); } }}>
@@ -118,7 +120,7 @@ const InteractiveMap: React.FC = () => {
                   <div className="font-display text-lg text-goldlight leading-tight">{s.name}</div>
                   {s.sanskrit && <div className="font-sanskrit text-sm" style={{ color: s.accent }}>{s.sanskrit}</div>}
                 </div>
-                <span className="ml-auto text-[10px] font-cinzel tracking-[.18em] uppercase px-2 py-1 rounded-full border whitespace-nowrap" style={{ color: s.accent, borderColor: `${s.accent}66` }}>{String(i + 1).padStart(2, '0')} · {KIND_LABEL[s.kind]}</span>
+                <span className="ml-auto text-[10px] font-cinzel tracking-[.18em] uppercase px-2 py-1 rounded-full border whitespace-nowrap" style={{ color: s.accent, borderColor: `${s.accent}66` }}>{i === journey.length - 1 ? '↩ · Return' : `${String(i + 1).padStart(2, '0')} · ${KIND_LABEL[s.kind]}`}</span>
               </div>
               <p className="mt-3 font-serif text-[#ece2c8] leading-relaxed text-[15px]">{s.description}</p>
             </button>

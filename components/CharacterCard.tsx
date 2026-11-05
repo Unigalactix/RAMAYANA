@@ -45,14 +45,6 @@ const CharacterCard: React.FC<Props> = ({ character, onOpen }) => {
             <div className="tc-name">{character.name}</div>
             <div className="tc-epithet">{character.epithet}</div>
 
-            <button
-              onClick={(e) => { e.stopPropagation(); onOpen?.(character); }}
-              className="btn-gold tc-front-codex"
-              aria-label={`Open detailed codex for ${character.name} without flipping the card`}
-              style={{ position: 'relative', zIndex: 5, margin: '10px auto 0', display: 'block', fontSize: 11, padding: '7px 14px' }}
-            >
-              Read the Codex
-            </button>
             <div className="tc-stats">
               {character.stats.map(s => (
                 <div className="tc-stat" key={s.label}>
@@ -70,6 +62,14 @@ const CharacterCard: React.FC<Props> = ({ character, onOpen }) => {
           <div className="tc-corner tl" />
           <div className="tc-corner br" />
           <div className={`tc-rarity-badge rarity-${character.rarity}`}>{RARITY_LABEL[character.rarity]}</div>
+          <button
+            onClick={(e) => { e.stopPropagation(); onOpen?.(character); }}
+            className="btn-gold"
+            aria-label={`Open detailed codex for ${character.name} without flipping the card`}
+            style={{ position: 'absolute', top: 22, left: 22, zIndex: 6, fontSize: 10, padding: '6px 11px', letterSpacing: '.12em' }}
+          >
+            Codex →
+          </button>
         </div>
 
         {/* BACK */}
