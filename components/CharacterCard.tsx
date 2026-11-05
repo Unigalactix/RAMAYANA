@@ -88,7 +88,10 @@ const CharacterCard: React.FC<Props> = ({ character, onOpen }) => {
             </div>
             <button
               onClick={(e) => { e.stopPropagation(); onOpen?.(character); }}
-              className="btn-gold mt-auto self-center"
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+              className="btn-gold mt-auto self-center tc-back-codex"
+              style={{ position: 'relative', zIndex: 10, pointerEvents: 'auto', flexShrink: 0 }}
               aria-label={`Open detailed codex for ${character.name}`}
             >
               Read the Codex

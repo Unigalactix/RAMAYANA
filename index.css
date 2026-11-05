@@ -233,7 +233,7 @@
       .tc-corner.br { bottom: 22px; right: 22px; border-left:none; border-top:none; }
 
       /* Back face */
-      .tc-back-inner { position: absolute; inset: 14px; border-radius: 14px; overflow: hidden; padding: 24px; display: flex; flex-direction: column; gap: 12px;
+      .tc-back-inner { position: absolute; inset: 14px; border-radius: 14px; overflow: hidden; padding: 18px; display: flex; flex-direction: column; gap: 8px; z-index: 2;
         background:
           radial-gradient(400px 220px at 50% 0%, rgba(212,175,55,0.2), transparent 60%),
           linear-gradient(180deg, #1a1326 0%, #0d0a18 100%);
@@ -936,3 +936,7 @@ footer p, .tc-fact-row span { color: #e8ddba; }
 
 /* Modal reading surface */
 .reading-modal p { margin-bottom: 1em; }
+
+/* Back-face Codex button must sit above every card overlay layer */
+.tc-back .tc-holo { pointer-events: none !important; }
+.tc-back-codex { isolation: isolate; }
