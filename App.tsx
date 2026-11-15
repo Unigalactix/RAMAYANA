@@ -208,7 +208,7 @@ const App: React.FC = () => {
           <SectionTitle
             eyebrow="Key Scenes · प्रमुख-दृश्य"
             title={<>Scenes that <span className="text-gradient-saffron">Light the Epic</span></>}
-            subtitle="Four defining moments from each of the seven Kandas — painted as scenic tableaux. Open any scene to sit with it a while; the playable ones take you into the Leelas."
+            subtitle="Four defining moments from each of the seven Kandas — painted as Madhubani folk-art panels: bold outlines, natural pigments, patterned borders, and a sun with a face. Open any scene to sit with it a while; the playable ones take you into the Leelas."
           />
         </Reveal>
         <Reveal delay={80}><SceneGallery onPlayLeela={playLeela} /></Reveal>
