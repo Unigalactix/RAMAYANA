@@ -8,6 +8,7 @@ const links = [
   { href: '#leelas', label: 'Leelas' },
   { href: '#themes', label: 'Themes' },
   { href: '#stories', label: 'Stories' },
+  { href: '#book', label: 'Read the Book' },
   { href: '#map', label: 'Path' },
   { href: '#temples', label: 'Temples' },
   { href: '#lineage', label: 'Lineage' },

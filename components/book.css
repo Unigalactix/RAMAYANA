@@ -1,0 +1,177 @@
+/* ============================================================
+   THE READING BOOK — a JINX-style page-turning reader for the
+   Ramayana Codex, restyled with the Madhubani identity of the
+   codices: cream paper, ink outlines, turmeric / vermilion /
+   indigo / leaf / lotus accents, patterned chapter plates.
+   Ported from the JINX reader (assets/book.css + reader base
+   styles) and adapted for React. All rules are scoped to the
+   .reader dialog so the rest of the Codex is untouched.
+   ============================================================ */
+
+body.reader-open { overflow: hidden; }
+
+.reader {
+  --ink: #ece2c8;
+  --line: #4c554c;
+  --sage: #f5d061;
+  --muted: #a79b7d;
+  --mono: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+  --serif: Georgia, "Times New Roman", serif;
+  padding: 0;
+  color: var(--ink);
+  background: #171b1b;
+  border: 1px solid #596258;
+  border-radius: 4px;
+  width: min(1080px, calc(100% - 32px));
+  height: min(96svh, 1200px);
+  max-height: 96svh;
+  max-width: none;
+  overflow: hidden;
+}
+.reader[open] { display: flex; flex-direction: column; }
+.reader::backdrop { background: rgba(4, 9, 11, .92); backdrop-filter: blur(7px); }
+.reader button { cursor: pointer; }
+.reader button:disabled { cursor: default; opacity: .45; }
+
+.reader-viewport { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; background: #171b1b; overflow: hidden; }
+.reader-viewport:fullscreen { width: 100vw; height: 100dvh; }
+
+.reader-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.reader-header h2 { font: 1.2rem var(--serif); margin: 3px 0 0; letter-spacing: -.02em; color: var(--ink); }
+.reader-header > div:first-child { min-width: 0; }
+.reader .tiny-label { font: .69rem/1.6 var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+.reader-window-controls { display: flex; align-items: center; gap: 10px; margin-left: 20px; flex-shrink: 0; }
+.reader-fullscreen { display: inline-flex; align-items: center; gap: 7px; min-height: 43px; padding: 8px 12px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: .72rem; font-family: var(--mono); }
+.reader-fullscreen:hover, .reader-fullscreen[aria-pressed="true"] { border-color: var(--sage); background: #26312b; }
+.icon-button { background: transparent; border: 1px solid var(--line); color: var(--ink); font-size: 1rem; min-width: 43px; min-height: 43px; }
+.icon-button:hover { border-color: var(--sage); }
+
+.reader.reader-full-page { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }
+.reader-full-page .book { width: min(840px, 100%); }
+.reader-full-page .book-page-text { inset-inline: clamp(24px, 6vw, 84px); }
+.reader-full-page .reader-header { padding-block: 8px; }
+.reader-full-page .reader-header .tiny-label { display: none; }
+
+.reader-toolbar { display: flex; gap: 16px; align-items: center; padding: 10px 24px; border-bottom: 1px solid var(--line); flex-shrink: 0; flex-wrap: wrap; }
+.reader-toolbar label { font-size: .7rem; display: flex; align-items: center; gap: 10px; min-width: 0; font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.reader-toolbar select { max-width: 300px; background: #20241f; color: var(--ink); border: 1px solid var(--line); padding: 8px; font: .72rem var(--mono); }
+.reader-toolbar select:disabled { opacity: .45; }
+.reader-text-controls { display: flex; gap: 4px; margin-left: auto; }
+.reader-text-controls button { min-height: 39px; min-width: 39px; background: transparent; border: 1px solid var(--line); color: var(--ink); font-family: var(--serif); font-size: .95rem; }
+.reader-text-controls button:hover { border-color: var(--sage); }
+
+#reader-state:not(:empty) { margin: 8px 24px; font-size: .8rem; max-height: 25svh; overflow-y: auto; color: var(--ink); }
+#reader-state .error-message { margin: 0; padding: 10px; border-left: 2px solid #d43d1a; background: rgba(212, 61, 26, .08); }
+#reader-state .retry-button { margin-left: 12px; background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 6px 10px; font: .7rem var(--mono); }
+#reader-state .retry-button:hover { border-color: var(--sage); }
+
+.book-stage { flex: 1; min-height: 180px; padding: 18px 48px 14px; display: flex; justify-content: center; perspective: 1800px; overflow: hidden; }
+.book { position: relative; width: min(590px, 100%); height: 100%; outline-offset: 9px; touch-action: pan-y; --book-size: 18px; }
+.book::before, .book::after { content: ""; position: absolute; inset: 3px -4px -3px 4px; background: #bcb8a9; border-radius: 2px 5px 5px 2px; box-shadow: 2px 2px 0 #575b51; }
+.book::after { inset: 6px -7px -6px 7px; z-index: -1; background: #8c9082; box-shadow: 10px 12px 30px rgba(0, 0, 0, .53); }
+.book-page { position: absolute; inset: 0; margin: 0; overflow: hidden; color: #252923; background: linear-gradient(90deg, #cec9b9, #efebdd 4%, #f4f0e5 12%, #f4f0e5 95%, #e8e3d6); border-radius: 2px 4px 4px 2px; box-shadow: inset 1px 0 2px rgba(255, 255, 255, .47); }
+.book-running-title { position: absolute; left: 34px; right: 30px; top: 17px; color: #686e62; font: 10px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .08em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-bottom: 1px solid #c9b98d; padding-bottom: 9px; }
+.book-page-text { position: absolute; inset: 57px 34px 43px 38px; overflow: hidden; font: var(--book-size)/1.65 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.book-page-text p { margin: 0 0 .8em; white-space: pre-wrap; }
+.book-page-text .source-context { font-size: .86em; color: #61685a; margin-bottom: 1.5em; font-style: italic; }
+.book-page-text h3 { font: 1.6em/1.2 Georgia, "Times New Roman", serif; margin: 0 0 .85em; letter-spacing: -.025em; color: #353b30; }
+.book-page-text .book-chapter-subtitle { color: #61685a; font-size: .8em; margin-top: -.6em; margin-bottom: 1.4em; }
+.book-page-text hr { width: 42px; border: 0; border-top: 1px solid #818874; margin: 1.2em auto; }
+.book-folio { position: absolute; bottom: 13px; right: 30px; left: 34px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: #68705e; font: 10px/1.5 var(--mono); }
+.book-folio > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bk-folio-orn { color: #b8860b; font-size: 8px; }
+.book-measure { visibility: hidden; pointer-events: none; }
+.book-leaf { position: absolute; inset: 0; transform-origin: left center; transform-style: preserve-3d; z-index: 3; pointer-events: none; }
+.book-leaf > .book-page { backface-visibility: hidden; }
+.book-leaf-back { position: absolute; inset: 0; backface-visibility: hidden; transform: rotateY(180deg); background: linear-gradient(90deg, #e2dccb, #f0ecdf 70%, #b4b2a2); box-shadow: -12px 0 24px rgba(0, 0, 0, .13); }
+.book-leaf::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .2), transparent 25%, rgba(0, 0, 0, .07)); pointer-events: none; }
+
+/* Drop cap on the first text page of every tale */
+.bk-first p:first-of-type::first-letter {
+  font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  font-size: 3.1em;
+  line-height: .82;
+  float: left;
+  padding: 6px 10px 0 0;
+  color: #d43d1a;
+}
+
+.book-reading-tools { display: flex; justify-content: center; align-items: center; gap: 24px; padding: 2px 24px; flex-shrink: 0; }
+.book-reading-tools .text-link { font-size: .66rem; }
+.text-link { border: 0; padding: 8px 0; background: transparent; color: var(--ink); font-size: .8rem; font-family: var(--mono); text-decoration: none; }
+.text-link:hover { color: var(--sage); }
+.reader-footer { flex-shrink: 0; border-top: 1px solid var(--line); padding: 9px 24px; gap: 12px; display: flex; align-items: center; justify-content: space-between; }
+.reader-footer .text-link { font-size: .76rem; min-height: 42px; }
+#reader-position { text-align: center; font-size: .6rem; }
+
+/* ---------- The Madhubani cover ---------- */
+.book-page.madhubani-cover { background: #f7ead2; }
+.bk-cover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 44px 30px; color: #2e1608; }
+.bk-cover::before { content: ""; position: absolute; inset: 10px; border: 2.5px solid #2e1608; pointer-events: none; }
+.bk-cover::after { content: ""; position: absolute; inset: 16px; border: 1px solid #d43d1a; pointer-events: none; }
+.bk-cover-band { position: absolute; left: 22px; right: 22px; height: 9px; background: repeating-linear-gradient(45deg, #e8a812 0 7px, transparent 7px 14px); opacity: .85; pointer-events: none; }
+.bk-cover-band.top { top: 22px; }
+.bk-cover-band.bottom { bottom: 22px; }
+.bk-cover-eyebrow { font: .68rem/1.6 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8a5a12; margin-bottom: 14px; }
+.bk-cover-art { width: min(100%, 400px); border: 2px solid #2e1608; box-shadow: 3px 3px 0 rgba(46, 22, 8, .35); line-height: 0; }
+.bk-cover-title { font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif; font-size: clamp(1.7rem, 5.4vw, 2.6rem); line-height: 1.08; margin: 20px 0 0; color: #2e1608; letter-spacing: .01em; }
+.bk-cover-sub { font: italic .98rem/1.55 Georgia, serif; color: #5d4326; max-width: 40ch; margin: 12px 0 0; }
+.bk-cover-rule { color: #d43d1a; letter-spacing: .6em; font-size: .7rem; margin: 16px 0 4px; text-indent: .6em; }
+.bk-open-btn { margin-top: 12px; background: #2e1608; color: #f7ead2; border: 1.5px solid #2e1608; padding: 12px 26px; font: .78rem var(--mono); letter-spacing: .1em; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(232, 168, 18, .9); }
+.bk-open-btn:hover { background: #d43d1a; border-color: #d43d1a; }
+.bk-cover-foot { margin-top: auto; font: .6rem/1.5 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: #8a5a12; }
+
+/* ---------- Chapter plate pages ---------- */
+.bk-plate { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.bk-plate::after { content: ""; position: absolute; inset: 2px; border: 1.5px solid rgba(46, 22, 8, .5); outline: 1px solid rgba(212, 61, 26, .4); outline-offset: 2.5px; pointer-events: none; }
+.bk-plate-kanda { font: .62rem/1.6 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: #8a5a12; margin-bottom: 12px; }
+.bk-plate-art { width: min(100%, 420px); border: 2px solid #2e1608; box-shadow: 3px 3px 0 rgba(46, 22, 8, .3); line-height: 0; flex: 0 1 auto; }
+.bk-plate-art svg { max-height: 32svh; width: 100%; height: auto; }
+.bk-plate h3 { margin-top: 20px; }
+.bk-plate .book-chapter-subtitle { max-width: 44ch; }
+.bk-plate-note { font: italic .82em/1.5 Georgia, serif; color: #8a5a12; }
+
+@media (max-width: 600px) {
+  .reader { width: 100%; height: 100svh; max-height: 100svh; margin: 0; border: 0; border-radius: 0; }
+  .reader-header { padding: 10px 14px; }
+  .reader-header h2 { font-size: 1rem; }
+  .reader-header .tiny-label { font-size: .55rem; }
+  .reader-window-controls { gap: 6px; margin-left: 10px; }
+  .reader-fullscreen { padding-inline: 8px; font-size: .62rem; max-width: 118px; }
+  .reader-header h2 { overflow-wrap: anywhere; }
+  .reader-full-page .book-page-text { inset-inline: 24px 19px; }
+  .reader-toolbar { padding: 8px 14px; gap: 8px 12px; }
+  .reader-toolbar label { flex: none; min-width: 0; gap: 5px; font-size: .65rem; }
+  .reader-toolbar select { width: 150px; max-width: 150px; }
+  .reader-toolbar .book-chapter-label { flex: 1 1 150px; }
+  .book-chapter-label select { width: 100%; max-width: 190px; min-width: 70px; }
+  .reader-text-controls { margin: 0; }
+  .reader-text-controls button { min-height: 30px; min-width: 32px; }
+  #reader-state:not(:empty) { margin: 6px 14px; }
+  .book-stage { padding: 12px 18px; }
+  .book-page-text { inset: 44px 19px 33px 24px; line-height: 1.55; }
+  .book-running-title { top: 11px; left: 24px; right: 19px; font-size: 9px; padding-bottom: 6px; }
+  .book-folio { bottom: 10px; left: 24px; right: 19px; font-size: 9px; }
+  .book-reading-tools { gap: 14px; padding-inline: 14px; }
+  .book-reading-tools .text-link { font-size: .58rem; }
+  .reader-footer { padding: 5px 14px; gap: 6px; }
+  .reader-footer .text-link { font-size: .65rem; }
+  #reader-position { font-size: .52rem; }
+  .bk-cover { padding: 30px 26px 22px; }
+  .bk-cover-art { width: min(100%, 320px); }
+  .bk-plate-art { width: min(100%, 320px); }
+}
+@media (max-height: 540px) {
+  .reader { height: 100svh; max-height: 100svh; }
+  .reader-header { padding-block: 5px; }
+  .reader-header .tiny-label, .book-reading-tools { display: none; }
+  .reader-toolbar { padding-block: 5px; }
+  .book-stage { min-height: 100px; padding-block: 7px; }
+  .book-page-text { inset-block: 34px 24px; }
+  .book-running-title { top: 6px; padding-bottom: 3px; }
+  .book-folio { bottom: 5px; }
+  .reader-footer { padding-block: 2px; }
+  .bk-plate-art svg { max-height: 22svh; }
+  .bk-cover-art { width: min(100%, 240px); }
+  .bk-cover-sub { display: none; }
+}

@@ -19,6 +19,7 @@ import InteractiveScenes from './components/InteractiveScenes';
 import StoryModal from './components/StoryModal';
 import PortraitGallery from './components/PortraitGallery';
 import SisterCodices from './components/SisterCodices';
+import SceneArt from './components/SceneArt';
 import { storyDetails } from './storiesContent';
 import { characters, kandas, themesData, stats, stories } from './constants';
 import { Character, Kanda, Story } from './types';
@@ -26,8 +27,13 @@ import { Character, Kanda, Story } from './types';
 // Lazy-load the WebGL flight page so the Codex bundle stays untouched.
 const HanumanFlight = lazy(() => import('./components/HanumanFlight'));
 
+// Lazy-load the Reading Book (JINX-style page-turning reader) the same way.
+const BookReader = lazy(() => import('./components/BookReader'));
+
 const FLIGHT_HASH = '#leap';
 const isFlightHash = (h: string) => h === FLIGHT_HASH || h.startsWith(FLIGHT_HASH + '/');
+const BOOK_HASH = '#book';
+const isBookHash = (h: string) => h === BOOK_HASH || h.startsWith(BOOK_HASH + '/');
 
 // Scroll reveal — fades/rises each block in once as it enters the viewport.
 // Honours prefers-reduced-motion: content is simply visible, no animation.
@@ -78,12 +84,24 @@ const App: React.FC = () => {
   const [showFlight, setShowFlight] = useState<boolean>(() =>
     typeof window !== 'undefined' && isFlightHash(window.location.hash)
   );
+  const [showBook, setShowBook] = useState<boolean>(() =>
+    typeof window !== 'undefined' && isBookHash(window.location.hash)
+  );
 
   useEffect(() => {
-    const onHash = () => setShowFlight(isFlightHash(window.location.hash));
+    const onHash = () => {
+      setShowFlight(isFlightHash(window.location.hash));
+      setShowBook(isBookHash(window.location.hash));
+    };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
+
+  const exitBook = () => {
+    // Clear the hash without leaving an entry in history.
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    setShowBook(false);
+  };
 
   // When entering / leaving the flight page, manage body scroll lock + scrollY.
   useEffect(() => {
@@ -278,6 +296,34 @@ const App: React.FC = () => {
         {shownStories.length === 0 && <p className="text-center font-serif italic text-[#d8cdb0]">No tales in this Kanda yet — the full telling lives in its scenes above.</p>}
       </section>
 
+      {/* THE READING BOOK — all thirty tales bound in one volume */}
+      <section id="book-cta" className="max-w-5xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="The Reading Book · पठन-पुस्तक"
+            title={<>Bound as a <span className="text-gradient-saffron">Book</span></>}
+            subtitle="All thirty tales bound in a single volume — every tale opening on its Madhubani plate and closing with its lesson, its pages turning as palm leaves once did."
+          />
+        </Reveal>
+        <Reveal delay={100}>
+          <div className="book-cta-card">
+            <div className="book-cta-art">
+              <SceneArt kind="chariot" accent="#e8a812" title="The return to Ayodhya" />
+            </div>
+            <div className="book-cta-body">
+              <div className="book-cta-eyebrow">The Ramayana · A Reading Book</div>
+              <h3>The whole epic, page by page</h3>
+              <p>
+                From the Putrakameshti fire to the Sarayu’s still water — every tale in order, grouped by Kanda in the
+                chapter list. Turn pages with a click, the arrow keys, or a swipe; make the text larger or smaller;
+                take the book full screen.
+              </p>
+              <a href="#book" className="book-cta-btn">Open the Book →</a>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* SACRED PATH */}
       <section id="map" className="max-w-6xl mx-auto px-6 py-20 md:py-28">
         <Reveal>
@@ -365,6 +411,11 @@ const App: React.FC = () => {
       {/* Global overlays */}
       <CommandPalette />
       <GlossaryDrawer />
+      {showBook && (
+        <Suspense fallback={null}>
+          <BookReader onClose={exitBook} />
+        </Suspense>
+      )}
     </div>
   );
 };

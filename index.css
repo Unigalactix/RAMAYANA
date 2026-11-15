@@ -970,3 +970,15 @@ footer p, .tc-fact-row span { color: #e8ddba; }
 .lotus-band-item { width: 34px; height: 20px; opacity: .9; }
 
 @media (prefers-reduced-motion: reduce) { .diya-flame { animation: none; } .portrait-card, .sister-card { transition: none; } }
+
+/* ---------- The Reading Book — home CTA card (reader styles live in components/book.css) ---------- */
+.book-cta-card { display: flex; gap: 0; background: #f7ead2; color: #2e1608; border: 2.5px solid #2e1608; outline: 1px solid rgba(212,61,26,.55); outline-offset: 5px; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 60px -25px rgba(0,0,0,.85), 6px 6px 0 rgba(232,168,18,.35); text-align: left; }
+.book-cta-art { flex: 0 0 42%; line-height: 0; border-right: 2px solid #2e1608; }
+.book-cta-art svg { width: 100%; height: 100%; object-fit: cover; }
+.book-cta-body { flex: 1; padding: 30px 34px; display: flex; flex-direction: column; align-items: flex-start; }
+.book-cta-eyebrow { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: #8a5a12; margin-bottom: 10px; }
+.book-cta-body h3 { font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.15; color: #2e1608; margin: 0 0 12px; }
+.book-cta-body p { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.12rem; line-height: 1.6; color: #5d4326; margin: 0; }
+.book-cta-btn { margin-top: auto; padding-top: 0; display: inline-block; margin-top: 22px; background: #2e1608; color: #f7ead2; padding: 13px 26px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(232,168,18,.9); transition: background .2s ease, transform .2s ease; }
+.book-cta-btn:hover { background: #d43d1a; transform: translateY(-1px); }
+@media (max-width: 720px) { .book-cta-card { flex-direction: column; } .book-cta-art { flex: none; border-right: 0; border-bottom: 2px solid #2e1608; } .book-cta-body { padding: 24px; } }
