@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const links = [
   { href: '#characters', label: 'Pantheon' },
+  { href: '#portraits', label: 'Portraits' },
   { href: '#kandas', label: 'Kandas' },
   { href: '#scenes', label: 'Scenes' },
   { href: '#leelas', label: 'Leelas' },

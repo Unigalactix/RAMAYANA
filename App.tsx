@@ -17,6 +17,8 @@ import ClosingShloka from './components/ClosingShloka';
 import SceneGallery from './components/SceneGallery';
 import InteractiveScenes from './components/InteractiveScenes';
 import StoryModal from './components/StoryModal';
+import PortraitGallery from './components/PortraitGallery';
+import SisterCodices from './components/SisterCodices';
 import { storyDetails } from './storiesContent';
 import { characters, kandas, themesData, stats, stories } from './constants';
 import { Character, Kanda, Story } from './types';
@@ -188,6 +190,18 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* MADHUBANI PORTRAITS — the faces of the epic */}
+      <section id="portraits" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="Madhubani Portraits · मधुबनी-चित्र"
+            title={<>Faces of the <span className="text-gradient-saffron">Epic</span></>}
+            subtitle="Twenty-two portrait medallions in the Madhubani manner — rayed golden halos, patterned borders, and the attributes the epic itself assigned: Rama’s bow, Sita’s lotus, Hanuman’s gada, Ravana’s ten crowned heads."
+          />
+        </Reveal>
+        <Reveal delay={80}><PortraitGallery /></Reveal>
+      </section>
+
       {/* KANDAS TIMELINE */}
       <section id="kandas" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
         <Reveal>
@@ -248,7 +262,7 @@ const App: React.FC = () => {
           <SectionTitle
             eyebrow="The Storybook · कथा-कोश"
             title={<>Tales from the <span className="text-gradient-saffron">Epic</span></>}
-            subtitle="Eighteen tales — each a single gem in the necklace of the Ramayana. Tap any to read its full retelling."
+            subtitle="Thirty tales — the whole epic in order, from the Putrakameshti fire to the still water of the Sarayu. Every Kanda is here, Uttara included. Tap any tale to read its full retelling beneath its Madhubani scene."
           />
         </Reveal>
         <div className="flex flex-wrap justify-center gap-2 mb-10" role="group" aria-label="Filter tales by Kanda">
@@ -300,6 +314,18 @@ const App: React.FC = () => {
         <Reveal delay={100}><FamilyTree /></Reveal>
       </section>
 
+      {/* THE SACRED CODICES — sister sites of the eternal epics */}
+      <section id="codices" className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <Reveal>
+          <SectionTitle
+            eyebrow="The Sacred Codices · चतुः-कोश"
+            title={<>One Library, <span className="text-gradient-saffron">Four Codices</span></>}
+            subtitle="The Ramayana does not stand alone. It is bound first to the Bhagavata Purana by the Vishnu thread — the same Lord who walks here as Rama reigns there through all His avatars — and to its cousin epics, the Mahabharata and the Shiva Purana."
+          />
+        </Reveal>
+        <Reveal delay={80}><SisterCodices /></Reveal>
+      </section>
+
       {/* PHALA-ŚRUTI / CLOSING SHLOKA */}
       <ClosingShloka />
 
@@ -320,6 +346,15 @@ const App: React.FC = () => {
         <p className="mt-4 font-serif italic text-[#c9bd9b] max-w-xl mx-auto">
           “रामो विग्रहवान् धर्मः” — Rama is dharma embodied. May His name guard every breath.
         </p>
+        <nav className="mt-12" aria-label="The Sacred Codices — sister sites">
+          <div className="font-cinzel text-[10px] tracking-[.35em] uppercase text-goldlight/70 mb-4">The Sacred Codices</div>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-cinzel text-sm tracking-[.12em]">
+            <span className="text-goldlight" aria-current="page">Ramayana Codex</span>
+            <a href="https://unigalactix.github.io/BHAGAVATHAM/" target="_blank" rel="noopener noreferrer" className="text-[#c9bd9b] hover:text-goldlight underline-offset-4 hover:underline">Bhagavata Codex</a>
+            <a href="https://unigalactix.github.io/Mahabharat/" target="_blank" rel="noopener noreferrer" className="text-[#c9bd9b] hover:text-goldlight underline-offset-4 hover:underline">Mahabharata Codex</a>
+            <a href="https://unigalactix.github.io/ShivaPuran/" target="_blank" rel="noopener noreferrer" className="text-[#c9bd9b] hover:text-goldlight underline-offset-4 hover:underline">Shiva Purana Codex</a>
+          </div>
+        </nav>
         <p className="mt-10 text-xs text-[#a99875] tracking-widest uppercase">© Ramayana Codex · Built with reverence</p>
       </footer>
 

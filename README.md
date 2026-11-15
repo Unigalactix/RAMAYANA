@@ -8,10 +8,12 @@ An immersive, single-page tribute to the **Ramayana** — Valmiki's Adi Kavya �
 
 - **Pantheon** — Flip-card portraits of Rama, Sita, Lakshmana, Hanuman, Ravana, and the wider cast, each with stats, Sanskrit names, hand-drawn SVG sigils (no emoji), and lore. Filterable by rarity, with direct Codex access from the card front.
 - **Seven Kandas** — An interactive timeline through Bala, Ayodhya, Aranya, Kishkindha, Sundara, Yuddha, and Uttara Kanda.
-- **Key Scenes** — Four scenic SVG tableaux per Kanda (28 in all), from the Putrakameshti Yajna and the breaking of Shiva's bow to Lanka Dahan and Sita's return to the Earth.
+- **Key Scenes** — Four Madhubani folk-art panels per Kanda (28 in all), from the Putrakameshti Yajna and the breaking of Shiva's bow to Lanka Dahan and Sita's return to the Earth.
 - **Interactive Leelas** — Six playable moments: break Shiva's Dhanush, face Parashurama, hold Kaikeyi's chariot in the Battle for Indra, face the fourteen thousand in Aranya, burn Lanka as Hanuman, and search for the Sanjeevani before dawn.
 - **Sacred Path** — A real interactive map of the 14-year journey from Ayodhya to Lanka, with a drawn route, tappable pins, and every halt, ashram, temple, and turning point along the way.
-- **Themes & Stories** — Curated meditations on dharma, devotion, and sacrifice, plus 18 tales retold in full inside the Codex (no external links), filterable by Kanda.
+- **Madhubani Portraits** — 22 generated SVG portrait medallions (rayed halos, patterned borders, canonical attributes — Rama's bow, Sita's lotus, Hanuman's gada, Ravana's ten heads), in the folk-art style shared across the Sacred Codices.
+- **Themes & Stories** — Curated meditations on dharma, devotion, and sacrifice, plus the **complete story: 30 tales retold in full inside the Codex** (no external links), covering every Kanda from Bala to a complete Uttara, each beneath its own Madhubani scene, filterable by Kanda.
+- **The Sacred Codices** — Sister-codex cross-links to the Bhagavata Codex (the Vishnu thread), Mahabharata Codex, and Shiva Purana Codex, as a dedicated section and in the footer.
 - **Solar Dynasty** — The zoomable Suryavansha family tree, with tap-for-detail on every name.
 
 ## Tech Stack

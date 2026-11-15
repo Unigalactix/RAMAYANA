@@ -48,7 +48,7 @@ export interface Kanda {
 export interface Story {
   title: string;
   description: string;
-  link: string;
+  link?: string; // legacy external link — tales are now read fully in-app
 }
 
 export interface FamilyTreeNode {

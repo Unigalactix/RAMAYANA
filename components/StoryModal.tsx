@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Story } from '../types';
 import { storyDetails } from '../storiesContent';
 import Sigil from './Sigil';
+import SceneArt from './SceneArt';
 
 const StoryModal: React.FC<{ story: Story; onClose: () => void }> = ({ story, onClose }) => {
   const detail = storyDetails[story.title];
@@ -22,6 +23,11 @@ const StoryModal: React.FC<{ story: Story; onClose: () => void }> = ({ story, on
           <button onClick={onClose} className="btn-ghost !px-3 !py-2" aria-label="Close">✕</button>
         </div>
         <div className="hr-ornate my-6"><span>✦</span></div>
+        {detail && (
+          <div className="rounded-2xl overflow-hidden mb-6 border border-gold/25">
+            <SceneArt kind={detail.art} accent={detail.accent} title={story.title} />
+          </div>
+        )}
         {detail ? detail.body.map((p, i) => (
           <p key={i} className="font-serif text-lg text-[#ece2c8] leading-relaxed">{p}</p>
         )) : <p className="font-serif text-lg text-[#ece2c8] leading-relaxed">{story.description}</p>}
